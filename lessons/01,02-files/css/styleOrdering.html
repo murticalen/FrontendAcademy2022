@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Style Ordering - SFA</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <!-- here we add custom font from GoogleFonts, this could be useful later on :) -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <p>Only p tag</p>
+    <p class="textColor">p tag with class</p>
+    <p id="uniqueP" class="textColor">p tag with class and id</p>
+    <p style="color: orange;" id="uniqueP" class="textColor">p tag with class, id and inline style</p>
+    
+    <div class="textColor">Only blue class</div>
+    <div class="textColor2">Only tomato class</div>
+    <div class="textColor textColor2">both classes</div>
+    <!-- order of classes on element is not important -->
+    <div class="textColor2 textColor">both classes, different order on element</div>
+    <div class="textColor textColor2 textColor3">Overridden color</div>
+
+    <br />
+    <a style="margin: 32px;" href="base.html">&lt; Previous </a>
+  </body>
+</html>

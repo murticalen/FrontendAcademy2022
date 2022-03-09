@@ -1,0 +1,26 @@
+{
+  "name": "frontend-academy-2022",
+  "version": "1.0.0",
+  "description": "Repository for lessons and materials for SofaScore Frontend Academy 2022",
+  "main": "index.js",
+  "scripts": {
+    "start:01": "mdx-deck lessons/01.mdx",
+    "build:01": "mdx-deck build lessons/01.mdx"
+  },
+  "repository": "git@github.com:murticalen/FrontendAcademy2022.git",
+  "author": "Alen Murtić <murtic.alen@hotmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "mdx-deck": "^4.1.1"
+  },
+  "keywords": [
+    "Frontend",
+    "JavaScript",
+    "React.js",
+    "HTML",
+    "CSS",
+    "Node.js",
+    "MDX"
+  ]
+}

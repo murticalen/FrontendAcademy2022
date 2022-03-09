@@ -1,0 +1,287 @@
+import { themes, Head, Footer, Header, Steps, Notes, Invert } from 'mdx-deck'
+import './styles.css'
+
+export const theme = { ...themes.highlight,
+  googleFont: 'https://fonts.googleapis.com/css?family=Roboto',
+  fonts: {
+    body: '"Roboto", system-ui, sans-serif',
+    monospace: '"Roboto Mono", monospace',
+  },
+  colors: {
+    background: '#1c2632', text: '#828ba1', link: 'white'
+  }
+}
+const lessonTitle = 'Lesson 1 - Frontend. Browser. HTML. CSS.'
+
+<!-- general markup for all slides -->
+
+<Head>
+  <title>{lessonTitle}</title>
+</Head>
+
+<Header>
+    <div className="tC m8 white">SofaScore Academy 2022.</div>
+</Header>
+
+<Footer>
+  {' '}
+  <div className="tR m8 white">{lessonTitle}</div>
+</Footer>
+
+<!-- Slide 0 -->
+
+# Lesson 1
+
+import ssLogo from './images/ss-logo.png'
+
+<img className="med-image" src={ssLogo} />
+
+## Frontend. Browser. HTML. CSS.
+
+---
+
+# Web application
+
+- Wikipedia: <a href="https://en.wikipedia.org/wiki/Web_application">link</a>
+  - "A web application (or web app) is application software that runs on a web server"
+  - "Web applications are accessed by the user through a web browser with an active network connection"
+  - "These applications are programmed using a client–server modeled structure"
+- Simply: it consists of **Frontend** (client) and **Backend** (server)
+
+---
+
+# Client - Server Architecture 01
+
+import serverClient from './images/serverClient.png'
+
+<img className="med-image" src={serverClient} />
+
+- Core principle of web communication
+  - Client asks the server for a resourse, server responds
+    - Reource: HTML document, formatted data, image, video,...
+    - E.g. What is the score in a match? Give me team logo...
+  - THE protocol: **HTTP** (Hypertext Transfer Protocol)
+    - Later created: Websockets - to improve efficiency
+
+---
+
+# Frontend
+
+- Interface with which a user (person or a script) interacts (sees, clicks, ...)
+- "Visible" part of the web application
+- In a general meaning - any client which has UI - Android, iOS, KaiOS apps
+  - we use the term "Frontend" as a shorthand for web frontend
+
+## Web frontend
+
+- Visual application that is displayed by web browser
+- Source written in HTML, CSS, JavaScript
+  - Hopefully not in WebAssembly 😱
+    - Binary (compiled) [mostly JavaScript] for higher performance
+    - https://blog.scottlogic.com/2018/04/26/webassembly-by-hand.html
+
+---
+
+# Browser
+
+- A tool to navigate the web, _display_ web applications and provide interactivity
+  - core component: render engine
+    - MSHTML, EdgeHTML - deprecated, used by Internet Explorer and early Edge
+    - Gecko - Firefox
+    - WebKit - Safari and early Chrome
+    - Blink - Chromium project, fork of WebKit
+      - Chrome, current Edge, Brave, Opera, Vivaldi, Samsung Internet, ...
+  - browsers work on CPU, but do mostly graphics tasks
+    - hardware acceleration -> doing some tasks on GPU
+  - market share: <a href="https://gs.statcounter.com/browser-market-share">link</a>
+
+---
+
+# Browser flow
+
+import browserFlow from './images/browserFlow.png'
+
+<img className="big-image" src={browserFlow} />
+
+<Notes>
+
+- Process starts when user enters URL to a web page / web application.
+  - Browser need to locate IP address of a server (DNS lookup) to navigate user correctly
+- Once user connects to the server, browser will automatically request server (via HTTP GET request) for `index.html` document.
+- Browser then parses (reads) document and searches for additional documents needed for a page to be displayed correctly.
+  - Those documents could be: CSS style sheets, JavaScript scripts, images, etc.
+- All required documents will be requested by browser (again via HTTP GET requests).
+- When browser has all resources needed it will start building the page. Browser used DOM (Document Object Model) to represet HTML structure.
+  - Page building is 4 step process which is out of the scope of this lecture, but feel free to dig deeper if it sounds interesting.
+    More information can be found [here](https://developer.mozilla.org/en-US/docs/Web/Performance/How_browsers_work#render).
+
+</Notes>
+
+---
+
+# Browser differences
+
+- Different engines -> differences in how everything works
+  - most of things are standardized via W3C, but some browsers don't support some featured
+    - <a href="https://caniuse.com/mdn-api_navigator_share">Can I use "navigator.share"?</a>
+  - browsers depend on the OS
+- Reporting bugs cheatsheet:
+  - always report: browser, OS
+  - can make a difference: ad-blocker, tracking protection, private or normal mode
+    - also if 3rd party cookies are enabled or not
+  - nice caveat: hardware acceleration
+    - e.g. Chromium browsers and image scaling with hardware acceleration since version 80-sth
+
+---
+
+# HTML
+
+- **H**yper**T**ext **M**arkup **L**anguage
+  - HyperText -> text with references to other pages (links)
+  - Markup -> standardized set of notations (tags and attributes)
+    - e.g. XML, markdown (.md), TeX/LaTeX
+  - Idea: **How to** display content
+    - NOT A PROGRAMMING LANGUAGE!!!! MARKUP LANGUAGE!!!
+- Created by Tim Berners-Lee to enable document sharing (text based -> links, headings, paragraphs)
+- Standardized by W3C
+  - Latest and greatest: HTML5 - late 2000s, big improvements
+    - Made propietary things such as Flash obsolete
+  - <a href="https://morioh.com/p/6d422fc49bd2">HTML6 is coming</a>
+
+---
+
+# HTML Structure
+
+- **HTML Element: Tag + Attribute(s) + Content**
+  - Tag: identifies element (`html`, `body`, `b`, `div`, `span`)
+    - opening: e.g. `<div>`
+    - closing: `</div>`
+    - self closing: `<img/>`
+  - Attribute: specifies properties of an element (e.g. styling, source for an image, ...)
+  - Content: between opening and closing tag
+    - any text, HTML element, ...
+    - self closing tags don't have content
+- `<b>This is bold text</b>`
+- `<div id="atribute_example">Text and/or other element(s)</div>`
+- `<img src="path_to_image" alt="Text if image fails to load" />`
+- Each HTML document has `html`, `body`, `head` tags.
+
+---
+
+# Semantic HTML
+
+- The same content can be described in different ways
+  - Write HTML in a way it conveys meaning when read, not just in browser
+
+import semanticHtml from './images/semantic-html.jpg'
+
+<img className="med-image" src={semanticHtml} />
+
+---
+
+# HTML Code sample
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>SofaScore Frontend Academy</title>
+  </head>
+
+  <body>
+    <p>Hello!</p>
+  </body>
+</html>
+```
+
+- **HTML relations:**
+  - Parent - Child -> child is parent's content
+  - Siblings - two elements with the same parent
+
+---
+
+<Invert>
+
+# HTML Examples
+
+</Invert>
+
+---
+
+# CSS
+
+- **C**ascading **S**tyle **S**heets
+- How HTML elements are displayed on device
+- CSS3 specification
+- `cssProperty: valueOfProperty;`
+- `color: blue;`
+
+<Notes>
+
+- Cascading -> styles cascade (apply to lower levels) if not overridden
+- Style Sheets -> suggests separate CSS file(s), but CSS could also be inline, or embedded in `style` tag
+- `color` is property, `blue` is value, don't forget the semicolon (if omitted it would merge with next line and then both lines would be invalid and not applied)
+
+</Notes>
+
+---
+
+# CSS Selectors
+
+CSS defines styles and can be applied to single element, or to the group of elements
+
+- Inline styling - for single element
+  - `<p style="color:blue;">Text</p>`
+- Style all elements with the same tag
+  - `h2 { text-transform: uppercase; }`
+- Style all elements with the same `class` attribute set to `className`
+  - `.className { background-color: tomato; }`
+- Style all elements with the same `id` attribute
+  - `#uniqueId { text-align: center; }`
+- Selectors can be mixed
+  - `h2.specialHeading { padding: 8px; }`
+  - `h2 .specialHeading { margin: 16px 8px; }`
+- Universal selector (`*`), Grouping selector (`div, p { ... }`)
+- Specificity: Inline style > Id Styling > Class styling > Tag styling
+
+<Notes>
+
+- Selecting tags could be useful for resetting default browser styling (i.e. `ul` elements)
+- Classes are most common CSS selectors -> allow to style all elements with the same class. Same element can have multiple classes (e.g. `<div class="big blue rounded" />`)
+- Id selectors are used sparingly. to style unique elements
+- Id attributes should be unique for each element and should appear only once on each page.
+  Plural form of the sentence is used because it would work on multiple elements with the same `id`, but this is an anti-pattern and should be avoided.
+- Mixing selectors is useful when certain styles need to be applied only in specific context (e.g. styling inputs in forms differently)
+- [CSS Specificity](https://www.w3schools.com/css/css_specificity.asp)
+
+</Notes>
+
+---
+
+# Adding CSS to HTML
+
+- `<link rel="stylesheet" type="text/css" href="myStyleSheet.css">`
+
+- Embedded in `<style></style>` element
+
+- Directly on element
+
+- It is applied in order they are linked and order in the file in which they were defined
+
+- Do separate HTML and CSS files!
+
+---
+
+<Invert>
+
+# Basic CSS Examples
+
+</Invert>
+
+---
+
+# Thank you
+
+## Next lecture: Advanced CSS: Box Model, Display, Flex...
+
+### Thanks to **Matija Šekrst**! - last year's teacher, some code is his
