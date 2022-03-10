@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Complex - SFA</title>
+  </head>
+  <body>
+    <header>Page Header</header>
+    
+    <!-- hr is horizontal line separator -->
+    <hr />
+    
+    <main>
+      <h1>Page Content</h1>
+      <p>Different tags have different default browser styles</p>
+      <h3>Such as:</h3>
+      
+      <!-- ul is unordered list (dots), ol is ordered list (numbers) -->
+      <ul>
+        <li>Font size and weight (bold)</li>
+        <li>Margins</li>
+        <li>Paddings</li>
+        <!-- Display property is explained later :) -->
+        <li>Display property</li>
+      </ul>
+
+      <!-- this block is showcase of common tags, note title attribute on span, hover mouse over that word and see what happens -->
+      <p>
+        Note that <code>header</code> and <code>footer</code> tags render only text with no styles (separators are new
+        tag), while other have distinct styling <button>Like this button</button>. Styling of non styled elements is left to developer, so fair question would be: 
+        <pre>Why should we use those tags when their layout is the same as for the <span title="span and div are very common html tags">div</span> tag?</pre>
+        <p>It's because our HTML is in most cases viewed by users using ordinary browsers, but specific visitors could also visit our page.
+          Those specific visitors include <b>Crawlers</b> (Such as Google crawler) or users using screen readers.
+          <img height="200px" height="160px" src="https://www.perkinselearning.org/sites/elearning.perkinsdev1.org/files/styles/scale_only_519x374/public/screen%20reader.png?itok=inaCNhu3" alt="Screen reader" />
+          Specific tags help those users to navigate pages.
+        </p>
+      </p>
+    </main>
+
+    <hr />
+    
+    <footer>
+      <!-- br brakes line into new row -->
+      <br />
+      <!-- notice that some characters would be interpreted as syntax errors (<) so there is special syntax to display them -->
+      Page Footer <br /> <a href="base.html">&lt; Previous</a>&nbsp;<a href="links.html">Next ></a></footer>
+  </body>
+</html>

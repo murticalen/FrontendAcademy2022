@@ -1,0 +1,138 @@
+* {
+  font-family: 'Lato', sans-serif;
+}
+
+h1 {
+  color: #ff00ff;
+}
+
+.aqua {
+  background-color: aquamarine;
+}
+
+#special {
+  background-color: #ddd;
+  transform: rotate(180deg);
+}
+
+/* ordering example */
+
+p {
+  color: red;
+}
+
+.textColor {
+  color: blue;
+}
+
+#uniqueP {
+  color: green;
+}
+
+.textColor2 {
+  color: tomato;
+}
+
+.textColor3 {
+  /* important overrides previous properties, use this when absolutely necessary */
+  color: teal !important;
+}
+
+/* box model example */
+
+.box-model-wrapper {
+  padding: 50px;
+  width: 500px;
+}
+
+.bg-blue {
+  background-color: blue;
+}
+
+.bg-purple {
+  background-color: purple;
+}
+
+.box-model {
+  width: 250px;
+  padding: 50px;
+  margin: 50px;
+  border: 25px solid red;
+  background-color: green;
+}
+
+.border-box {
+  box-sizing: border-box;
+}
+
+/*  advanced CSS example */
+
+.position-relative {
+  position: relative;
+}
+
+/* keyframes syntax is used to create CSS animation, slide is any name for created animation */
+@keyframes slide {
+  /* beginning of an animation */
+  from {
+    left: 0;
+  }
+  /* end of an animation */
+  to {
+    left: 500px;
+  }
+  /* fine steps can be also defined (using percentages) */
+  /* https://www.w3schools.com/cssref/css3_pr_animation-keyframes.asp */
+}
+
+.position-element {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  height: 165px;
+  width: 420px;
+  background-color: black;
+  /* use slide animation, with 5s period, repeat indefinitely, and after single animation alternate direction */
+  animation: slide 5s infinite alternate;
+}
+
+.image {
+  height: 500px;
+}
+
+.checkbox {
+  /* try commenting this line, to better see what is happening */
+  display: none;
+}
+
+.span-label {
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 20px;
+  /* 700 is bold, 400 is normal */
+  font-weight: 700;
+  color: blue;
+  transition: color 0.5s ease-in-out;
+}
+
+/* add style on hover */
+.span-label:hover {
+  color: green;
+}
+
+/* :hover is called pseudo class (there are others too: :active, :before, :after, ...) */
+
+/* element is active when it's clicked and click is hold */
+.span-label:active {
+  color: pink;
+}
+
+/* apply styling only if input is checked */
+/* selector combining */
+input:checked + span {
+  color: red;
+}
+
+input:checked + span:hover {
+  color: orange;
+}

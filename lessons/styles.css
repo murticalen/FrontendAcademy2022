@@ -1,0 +1,48 @@
+/* UTILS */
+
+.tC {
+  text-align: center;
+}
+
+.tR {
+  text-align: right;
+}
+
+.tL {
+  text-align: left;
+}
+
+.m8 {
+  margin: 8px;
+}
+
+/* SPECIFIC */
+
+a {
+  color: #2f9d9d  !important;
+}
+a:hover {
+  color: #0dbaff !important;
+}
+
+.white {
+  color: white !important;
+}
+
+strong {
+  font-size: larger;
+  font-weight: 800;
+  color: #bcc2cf;
+}
+
+code {
+  color: rgba(0, 122, 194, 0.75);
+}
+
+.big-image {
+  height: 80vh !important;
+}
+
+.med-image {
+  height: 40vh !important;
+}
