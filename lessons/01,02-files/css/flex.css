@@ -1,0 +1,57 @@
+.container {
+  display: flex;
+  /* border: 1px solid black; */
+  /* width: 350px; */
+
+  /* flex-wrap - defines if children should be broken into multiple rows when not enough space */
+  /* Default -> don't allow wrapping in multiple rows - try to shrink children to fit */
+  flex-wrap: nowrap;
+  /* allow wrapping in multiple rows */
+  /* flex-wrap: wrap; */
+
+  /* flex-direction - defines main axis */
+  /* Default -> flex axis is horizontal */
+  flex-direction: row;
+  /* flex axis is vertical */
+  /* flex-direction: column; */
+  /* flex axis is horizontal, children are reversed */
+  /* flex-direction: row-reverse; */
+
+  /* align-items - defines arrangement of children on axis */
+  /* Default -> items are aligned to the start of the parent container */
+  align-items: flex-start;
+  /* items are aligned to the end of the parent container */
+  /* align-items: flex-end; */
+  /* items are centered on axis */
+  /* align-items: center; */
+
+  /* justify-content - defines behaviour of elements when there is extra space on main axis */
+  /* arrange children so there is even amount of space between them and half od that space is before first element and other half after last */
+  /* justify-content: space-around; */
+  /* arrange children so there is event amount of space between children and start/end of the parent container */
+  /* justify-content: space-evenly; */
+  /* arrange children so there is even amount od space between children, but no space from parent container */
+  /* justify-content: space-between; */
+  /* arrange children in center of container */
+  /* justify-content: center; */
+}
+
+.element-1 {
+  width: 100px;
+  height: 50px;
+  background-color: tomato;
+  /* align just this element on the cross-axis */
+  /* align-self: center; */
+}
+
+.element-2 {
+  width: 200px;
+  height: 100px;
+  background-color: lime;
+}
+
+.element-3 {
+  width: 100px;
+  height: 400px;
+  background-color: aqua;
+}
