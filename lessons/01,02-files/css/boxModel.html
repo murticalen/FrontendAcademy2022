@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Box Model - SFA</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- try adding float: right; to this element -->
+    <!-- after that try adding margin-left: auto; -->
+    <!-- after that try adding margin: 0 auto; -->
+    <!-- try to avoid float when possible -> use more modern flexbox or grid -->
+    <div class="box-model-wrapper bg-blue">
+      <div class="box-model">
+        Content box<br />
+        BLUE -> margin (content of parent element)<br />
+        RED -> border<br />
+        GREEN -> padding (content)<br />
+      </div>
+    </div>
+    <div class="box-model-wrapper bg-purple">
+      <div class="box-model border-box">
+        Border box<br />
+        PURPLE -> margin (content of parent element)<br />
+        RED -> border<br />
+        GREEN -> padding (content)<br />
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,190 @@
+import { themes, Head, Footer, Header, Steps, Notes, Invert } from 'mdx-deck'
+import './styles.css'
+
+export const theme = { ...themes.highlight,
+  googleFont: 'https://fonts.googleapis.com/css?family=Roboto',
+  fonts: {
+    body: '"Roboto", system-ui, sans-serif',
+    monospace: '"Roboto Mono", monospace',
+  },
+  colors: {
+    background: '#1c2632', text: '#828ba1', link: 'white'
+  }
+}
+const lessonNumber = 2
+const lessonName = 'Advanced CSS: Box Model, Position, Flex'
+const lessonTitle = `Lesson ${lessonNumber} - ${lessonName}`
+
+<!-- general markup for all slides -->
+
+<Head>
+  <title>{lessonTitle}</title>
+</Head>
+
+<Header>
+    <div className="tC m8 white">SofaScore Academy 2022.</div>
+</Header>
+
+<Footer>
+  {' '}
+  <div className="tR m8 white">{lessonTitle}</div>
+</Footer>
+
+<!-- Slide 0 -->
+
+<h1> Lesson {lessonNumber} </h1>
+
+import ssLogo from './images/ss-logo.png'
+
+<img className="med-image" src={ssLogo} />
+
+<h2>{lessonName}</h2>
+
+---
+
+# CSS Box Model 01
+
+- Each element is a box defined with `x`, `y`, `width` and `height`
+  - `x` and `y` mark the top left edge of the box
+  - `width` and `height` are applied to content part of the box
+- **Content** can be distributed in the box with `padding`
+- Box can be spaced form other boxes with `margin` (e.g. spacing between sibling elements)
+  - Margins of adjacent elements don't stack!!! They collapse. Bigger wins.
+    - https://www.joshwcomeau.com/css/rules-of-margin-collapse/
+  - can be negative - to place element closer - a bit hackish
+- Box can be made visible with `border` - draws line on the edge of the box
+
+---
+
+# CSS Box Model - Ilustration
+
+import boxModel from './images/boxModel.png'
+
+<img className="big-image" src={boxModel} />
+
+---
+
+
+# CSS Box Model 02
+
+- `box-sizing` property changes how browser calculates size of the element
+  - default value is `content-box`, which includes only content
+  - whether to border or padding included or excluded from the `width`
+    - we at SofaScore use `box-sizing: border-box` -> includes content, padding and border
+
+---
+
+<Invert>
+
+# CSS Box Model Example
+
+</Invert>
+
+---
+
+# CSS Display properties
+
+- Display property is used to specify how should element behave in the parent element.
+- Elements have default display properties defined in HTML specification
+- Common display properties:
+  - `block` - Element will take as much space as possible in the single row
+    - no two block elements in the same row
+    - e.g. `div`, `ul`, `main`, `p`
+  - `inline` - Element will use minimal width needed
+    - ignores width and height set
+    - possible multiple elements in the same row
+    - e.g. `span`, `b`
+  - `inline-block` - inline element which doesn't ignore width and hight set
+    - e.g. `img`
+  - `none` - removes element from screen
+  - `grid`, `table`, **`flex`**
+
+---
+
+# Flexbox - display: flex;
+
+- Displays element as block level container - element will remain the same, children will be changed
+- Applies flexible width (or height) and positioning to children
+- Aligns children on defined axis (row, column)
+- Children positioning can be specified (align all with start, center or end of the parent container)
+- If children take more space then available - define wrapping
+- If children take less space then available - define layout
+
+---
+
+<Invert>
+
+# FlexBox Example
+
+</Invert>
+
+---
+
+
+# Flexbox 02
+
+- `gap` property is nice addition to organizing items via flex, especially in column
+  - defines space between items so you don't have to use margins, also `row-gap` and `column-gap`
+  - BUT: Safari supported it late and not many people update their Macs on time 😭
+    - https://caniuse.com/?search=gap
+- more resources to learn flex:
+  - [W3C - Schools](https://www.w3schools.com/css/css3_flexbox.asp)
+  - [Flexbox Froggy game](https://flexboxfroggy.com/)
+  - [CSS tricks - Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+
+---
+
+# CSS Position properties
+
+- Type of positioning used for an element
+- Used to define how should element be positioned based on its `top`, `bottom`, `left` and `right`, properties
+- `z-index` - tells browser how to display overlapping elements (higher number first)
+  - default: first element on top
+- Common position properties:
+  - `static` - ignore position properties
+    - default value
+  - `relative` -> position element relative to element's normal position (`top`, `left`, ...)
+    - stays in normal flow
+  - `fixed` -> positions element relative to a screen (**not** content on the screen)
+    - stays on the same place when page is scrolled
+  - `absolute` -> positions element relative to nearest positioned ancestor 
+    - positioned ancestor -> any element with position property different then `static` (default) !!!
+    - common use with `relative` parent
+    - removed from normal flow
+  - `sticky` - positioning depends on scroll position, alternates between absolute and fixed
+
+---
+
+# CSS Transition properties
+
+- Allow gradual/smooth transition between states, e.g. changing color, appearance, etc.
+- There are many many librarires which do more than basic CSS transition
+  - but basic CSS is faster 😁
+  - we use [Framer motion](https://www.framer.com/tutorials/) when tasked to do something more than basic CSS
+
+---
+
+<Invert>
+
+# Position and Transition Example
+
+</Invert>
+
+---
+
+# CSS Media
+
+- Allow different style rules for different device capabilities (resolution, orientation)
+- Responsive design -> different styles for different resolutions
+- `@media screen and (min-width: 400px) { ...will apply styles only on screens wider than 400px }`
+- Mobile first - write for smaller screens first and then handle wider devices
+  - "Progressive Advancement" > "Graceful Degradation"
+
+
+---
+
+# Thank you
+
+## Next lecture: Advanced CSS: Box Model, Display, Flex...
+
+### Thanks to **Matija Šekrst**! - last year's teacher, some code is his

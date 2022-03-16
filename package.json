@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start:01": "mdx-deck lessons/01.mdx",
-    "build:01": "mdx-deck build lessons/01.mdx"
+    "build:01": "mdx-deck build lessons/01.mdx",
+    "start:02": "mdx-deck lessons/02.mdx",
+    "build:02": "mdx-deck build lessons/02.mdx"
   },
   "repository": "git@github.com:murticalen/FrontendAcademy2022.git",
   "author": "Alen Murtić <murtic.alen@hotmail.com>",
