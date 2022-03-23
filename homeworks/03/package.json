@@ -1,0 +1,16 @@
+{
+  "name": "homework-03",
+  "version": "1.0.0",
+  "description": "",
+  "main": "solutions.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watchAll"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^27.5.1"
+  }
+}
