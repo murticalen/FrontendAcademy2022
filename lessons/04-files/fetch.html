@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fetch</title>
+
+    <script>
+      function getPokemon() {
+        const url = 'https://pokeapi.co/api/v2/pokemon'
+
+        console.log('Fetch started')
+
+        fetch(url)
+          .then(response => {
+            // response is here raw response
+            // developer should decode response(parse it depending on data type (JSON), check response status (404 responses will also happen here))
+            console.log('Response', { response })
+
+            // status can be better checked (e.g. interval 199-299, `ok` property, ...)
+            if (response.status === 200) {
+              response.json().then(decodedData => {
+                console.log('Decoded response', decodedData)
+              })
+            } else {
+              console.log('Response status code is not OK!')
+            }
+          })
+          // if error occurs log to console as error
+          .catch(console.error)
+          // finally will be always called when promise finished (`then` or `catch`)
+          .finally(() => {
+            console.log('Fetch finished!')
+          })
+      }
+
+      // Async & Await version
+
+      // async function getPokemon() {
+      //   const url = 'https://pokeapi.co/api/v2/pokemon'
+
+      //   console.log('Fetch started')
+
+      //   try {
+      //     const response = await fetch(url)
+
+      //     console.log('Response', { response })
+
+      //     if (response.status === 200) {
+      //       const decodedData = await response.json()
+      //       console.log('Decoded response', decodedData)
+      //     } else {
+      //       console.log('Response status code is not OK!')
+      //     }
+      //   } catch (error) {
+      //     console.error('Error:', error)
+      //   } finally {
+      //     console.log('Fetch finished!')
+      //   }
+      // }
+    </script>
+  </head>
+  <body>
+    <button onclick="getPokemon()">Start fetch</button>
+  </body>
+</html>
