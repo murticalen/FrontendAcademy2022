@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blocking</title>
+
+    <script>
+      // console.log is synchronous but it's fast so that is not a problem
+      function logToConsole() {
+        console.log('Hello from the console SofaScore Academy')
+      }
+
+      // notice how alert blocks page when prompt is visible
+      // it is different from long for loop, because the for loop example at least remembers actions performed
+      function showAlert() {
+        alert('Hello SofaScore Academy')
+      }
+
+      let counter = 0
+
+      // DOM manipulation is also synchronous, but also fast
+      function incrementCounter() {
+        // note `getElementById` method. This DOM method is used to query DOM and return matching elements.
+        // there are different query methods available (`getElementsByName`, `getElementsByTag`, ...)
+        // methods are called on DOM element, that element is topmost when querying, the query won't go outside of that element (its parent won't be found if matched)
+        // document is a global variable that refers to the whole DOM and top-level element
+        const element = document.getElementById('counterValue')
+        const newValue = Number(element.innerText) + 1
+        // innerHTML will parse string as HTML and create new elements
+        element.innerHTML = `<b>${newValue}</b>`
+      }
+
+      function resetCounter() {
+        const element = document.getElementById('counterValue')
+        // innerText will add content as text (will not parse HTML)
+        element.innerText = 0
+
+        // this will not create new em element! (innerHTML will work)
+        // element.innerText = `<em>0</em>`
+      }
+
+      // this is an example of why long work should be made non-blocking (asynchronous)
+      // notice how everything is blocked when this function is running and runs only after this function ends
+      function blockCallStack() {
+        console.log('Starting blocking work')
+
+        for (let i = 0; i < 4e9; i += 1) {} // cca. 5s on my machine
+
+        console.log('Blocking work finished')
+      }
+    </script>
+  </head>
+  <body>
+    <button onclick="blockCallStack()">Run blocking code</button><br />
+    <hr />
+    <button onclick="logToConsole()">Log to console</button><br /><br />
+    <button onclick="showAlert()">Show alert</button><br /><br />
+    <button onclick="incrementCounter()">Increment counter</button>
+    <button onclick="resetCounter()">Reset counter</button>
+    <p>Counter: <span id="counterValue">0</span></p>
+  </body>
+</html>

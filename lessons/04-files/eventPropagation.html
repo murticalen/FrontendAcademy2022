@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Event Propagation</title>
+    <style>
+      .divStyles {
+        background-color: red;
+        padding: 16px;
+        cursor: pointer;
+      }
+
+      .buttonStyles {
+        background-color: blue;
+        color: white;
+        padding: 16px;
+        cursor: pointer;
+      }
+
+      .linkStyles {
+        display: inline-block;
+        padding: 16px;
+        background-color: yellow;
+        cursor: pointer;
+      }
+
+      .fancy {
+        color: pink;
+        padding: 8px;
+        font-size: 18px;
+        font-weight: 700;
+        border: 1px solid;
+      }
+    </style>
+  </head>
+
+  <body>
+    <label for="propagationModeSwitch"
+      ><input id="propagationModeSwitch" type="checkbox" /> Use capture propagation mode</label
+    >
+    <br />
+    <label for="stopPropagationSwitch"><input id="stopPropagationSwitch" type="checkbox" /> Stop propagation</label>
+    <hr />
+
+    <a id="linkElement" class="linkStyles">
+      <div id="divElement" class="divStyles">
+        <button id="buttonElement" class="buttonStyles"><span class="fancy">Fancy</span> Text</button>
+      </div>
+    </a>
+
+    <br />
+    <br />
+
+    <div style="max-width: 200px; color: white">
+      <h3 style="background-color: blue">Button => Blue</h3>
+      <h3 style="background-color: red">Div => Red</h3>
+      <h3 style="background-color: yellow; color: black">Link => Blue</h3>
+    </div>
+
+    <br />
+    <br />
+    <!-- target="_blank" means open in new tab (older browsers open new window) -->
+    <!-- following link on the click is links default behaviour -->
+    <!-- many elements have default behaviour -> e.g. form element submits the form when submit button is clicked (or enter pressed), maybe you've seen this on Homework 1 -->
+    <!-- <a id="linkElement" class="linkStyles" target="_blank" href="https://www.sofascore.com">SofaScore</a> -->
+
+    <!-- we put script tags in body to ensure that DOM is ready when registering listeners -->
+    <!-- otherwise we would put script tag into head as before and register event handlers when `onload` is triggered on `document` -->
+    <script>
+      // we can get elements once and use them in functions
+      const divElement = document.getElementById('divElement')
+      const buttonElement = document.getElementById('buttonElement')
+      const linkElement = document.getElementById('linkElement')
+
+      let isCaptureMode = false
+      let isPropagationStopped = false
+
+      function changePropagationMode(event) {
+        isCaptureMode = !isCaptureMode
+
+        console.log('Change propagation mode event handler', {
+          'Propagation mode': isCaptureMode ? 'CAPTURE' : 'BUBBLE',
+          event,
+        })
+
+        // propagation mode is set on listener registration -> we need to remove all listeners and add new ones with different mode
+        registerListeners()
+      }
+
+      function changeStopPropagation(event) {
+        isPropagationStopped = !isPropagationStopped
+
+        console.log('Change stop propagation event handler', {
+          'Propagation stopped': isPropagationStopped,
+          event,
+        })
+
+        // propagation check is done in each listener when event is triggered -> no need to remove and add new listeners
+      }
+
+      function buttonClick(event) {
+        // `currentTarget` property can also be useful.
+        // `currentTarget` is element on which is handler attached (changes depending on handler invoked)
+        // `target` is element which produced event (in our case clicked element, doesn't change)
+        console.log('Button click handler', { event, target: event.target, currentTarget: event.currentTarget })
+
+        // if we stop propagation, other handlers will not be called
+        if (isPropagationStopped) {
+          event.stopPropagation()
+        }
+      }
+
+      function divClick(event) {
+        console.log('Div click handler', { event, target: event.target, currentTarget: event.currentTarget })
+
+        if (isPropagationStopped) {
+          event.stopPropagation()
+        }
+      }
+
+      function linkClick(event) {
+        console.log('Link click handler', { event, target: event.target, currentTarget: event.currentTarget })
+
+        // prevent default behaviour for this element and this event -> don't go to the page
+        event.preventDefault()
+      }
+
+      // add switch event listeners - no need to remove them
+      const modeSwitch = document.getElementById('propagationModeSwitch')
+      // `addEventListener` method can be called on any DOM element (including `document`)
+      modeSwitch.addEventListener('change', changePropagationMode)
+
+      const propagationSwitch = document.getElementById('stopPropagationSwitch')
+      propagationSwitch.addEventListener('change', changeStopPropagation)
+
+      // register event listeners according to current settings
+      function registerListeners() {
+        // first remove listeners to avoid duplication, `removeEventListeners` needs all info provided to `addEventListener`, type of event, handler, useCapture
+        // if we don't specify all arguments event listener won't be removed
+        // isCaptureMode changed so we need to remove listeners for previous captureMode
+
+        buttonElement.removeEventListener('click', buttonClick, !isCaptureMode)
+        divElement.removeEventListener('click', divClick, !isCaptureMode)
+        linkElement.removeEventListener('click', linkClick, !isCaptureMode)
+
+        // third argument for `addEventListener` is useCapture boolean -> if true capture mode, if false or not specified bubbling mode
+        buttonElement.addEventListener('click', buttonClick, isCaptureMode)
+        divElement.addEventListener('click', divClick, isCaptureMode)
+        linkElement.addEventListener('click', linkClick, isCaptureMode)
+      }
+
+      registerListeners()
+    </script>
+  </body>
+</html>

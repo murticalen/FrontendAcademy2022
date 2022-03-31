@@ -1,0 +1,375 @@
+import { themes, Head, Footer, Header, Steps, Notes, Invert } from 'mdx-deck'
+import './styles.css'
+
+export const theme = { ...themes.highlight,
+  googleFont: 'https://fonts.googleapis.com/css?family=Roboto',
+  fonts: {
+    body: '"Roboto", system-ui, sans-serif',
+    monospace: '"Roboto Mono", monospace',
+  },
+  colors: {
+    background: '#1c2632', text: '#828ba1', link: 'white'
+  }
+}
+const lessonNumber = 4
+const lessonName = 'Advanced JavaScript'
+const lessonTitle = `Lesson ${lessonNumber} - ${lessonName}`
+
+<!-- general markup for all slides -->
+
+<Head>
+  <title>{lessonTitle}</title>
+</Head>
+
+<Header>
+    <div className="tC m8 white">SofaScore Academy 2022.</div>
+</Header>
+
+<Footer>
+  {' '}
+  <div className="tR m8 white">{lessonTitle}</div>
+</Footer>
+
+<!-- Slide 0 -->
+
+<h1> Lesson {lessonNumber} </h1>
+
+import ssLogo from './images/ss-logo.png'
+
+<img className="med-image" src={ssLogo} />
+
+<h2>{lessonName}</h2>
+
+---
+
+- Previous lesson was more on _programming language JavaScript_ side
+- Today's lesson is more on _JavaScript as Web technology_ side
+
+**Must watch:**
+
+- [Philip Roberts: What the heck is event loop anyway?](https://www.youtube.com/watch?v=8aGhZQkoFbQ)
+
+**Extra info:**
+
+- [Jake Archibald: In The Loop](https://www.youtube.com/watch?v=cCOL7MC4Pl0)
+
+---
+
+# JavaScript Design
+
+- Single-threaded -> no threading and standard parallelization **for developers**
+    - Has only one thread, which is often called _Main thread_.
+- Concurrent
+  - Based on **event loop**
+  - Concurrent
+    - one operation can progress without waiting for another operation to finish if the thread is available
+    - (e.g. JS will not wait for an HTTP request to finish and JS will run next line of a script).
+- Event loop -> collects, processes, executes sub-tasks (asynchronous code) and makes concurrency possible.
+
+---
+
+# JavaScript Runtime
+
+- Semantics that JavaScript engines implement and optimize
+  - parts that should be implemented by JavaScript engines (e.g. V8)
+- Defines how JavaScript should run
+- Contains **heap** and **call stack**
+  - as in other languages, a heap is used for memory allocation (e.g. this is where variables are stored, etc.)
+  - stack stores information about active functions (it keeps track of the script flow)
+  - Call stack answers questions:
+    - where is the script currently (which function)
+    - where should the script return after the current function
+    - what variables are currently in the scope
+    - ...
+
+---
+
+# Blocking
+
+- Happens when some function on the call stack(main thread) is taking too long (> 200ms) to execute so others can't execute
+- Direct consequence of the single-threaded runtime design
+  - Only one thing can run at a time on a call stack
+  - Others are blocked
+- JavaScript handles blocking and non-blocking functions
+- Developers should avoid blocking synchronous code whenever possible
+
+<Notes>
+
+- Non-blocking code usually executes in "background" (it uses other browser resources - networking, I/O operations, ...) and calls the function with the result once it has finished. These functions are called **callbacks**.
+- E.g. When the browser sends an HTTP request, it will fetch the data in the "background" and call its callback, with fetched data, which can then be utilised by JS to show fresh information.
+- Long-running blocking code can cause User Experience problems and should be avoided if possible.
+
+</Notes>
+
+---
+
+<Invert>
+
+# Example - Blocking
+
+- Writing 100% non-blocking code is impossible.
+- Balance between performant blocking code and slow and complex non-blocking code.
+
+</Invert>
+
+---
+
+<Invert>
+
+# Example - Non-Blocking
+
+</Invert>
+
+<Notes>
+
+- Even with 0s timeout, `Callback` is logged after `End`. Next slides explains why and how.
+
+</Notes>
+
+---
+
+# Browser overview
+
+import browserArchitecture from './images/browserArchitecture.png'
+
+<img className="big-image" alt="Browser Architecture" src={browserArchitecture} />
+
+<Notes>
+
+- Runtime -> Runs code, single-threaded
+- WebAPIs -> Functions called by our JS scripts, implemented by browsers or platforms (Node.js)
+- Callback queue -> Queues function that should be executed when possible. Those functions come from WebAPIs.
+- Event loop -> Moves functions from the callback queue to the call stack. Executes functions from the callback queue when possible (because the runtime is single-threaded)
+
+- Runtime is where our code is running. Functions can be placed on the call stack (and immediately ran) or delegated to WebAPIs.
+  WebAPI functions are designed to receive a callback argument, which will be called once work is finished (timer finished, event internally handled, etc.). Once a callback is called by WebAPIs, it is placed on the callback queue.
+  Multiple callbacks are queued (FIFO structure). The event loop is responsible for moving functions from the callback queue onto the call stack (effectively executing callbacks).
+  The event loop has to follow only one rule. **Callback can be placed on the call stack only when the call stack is empty** (no other functions are running).
+  Note how this rule forbids two callbacks from the call queue to be moved at the same time because the first callback fills the call stack, so it isn't empty for the second function (it will be empty once the first callback finishes).
+
+- Node has a very similar diagram, the difference is in APIs. Browser has WebAPIs while Node has different C++ APIs (i.e. `readFile()`).
+
+</Notes>
+
+---
+
+import threading from './images/threadingMeme.jpeg'
+
+<img className="big-image" alt="Threading Meme" src={threading} />
+
+---
+
+<Invert>
+
+# Example - Async
+
+[Basic Async](http://latentflip.com/loupe/?code=Y29uc29sZS5sb2coIlN0YXJ0Iik7CgpzZXRUaW1lb3V0KGZ1bmN0aW9uIG91clRpbWVvdXRDYWxsYmFjaygpIHsKICBjb25zb2xlLmxvZygiQ2FsbGJhY2siKTsKfSwgNTAwMCk7Cgpjb25zb2xlLmxvZygiRW5kIik7Cg%3D%3D!!!)
+
+```js
+console.log('Start')
+
+setTimeout(function ourTimeoutCallback() {
+  console.log('Callback')
+}, 5000)
+
+console.log('End')
+```
+
+</Invert>
+
+<Notes>
+
+- Loupe is showcased in the talk mentioned earlier
+- Notice how calling `setTimeout` sets a timer in WebAPIs (part of the browser) and after time has passed, creates callback `ourTimeoutCallback` on callback queue.
+
+</Notes>
+
+---
+
+# Render queue
+
+- Similar to the callback queue
+- Event loop is responsible for scheduling work from the render queue
+  - repaint layout
+  - animations
+- Has higher priority than the callback queue
+
+---
+
+<Invert>
+
+# Example - Non-Blocking
+
+Turn on render queue
+
+[Blocking](http://latentflip.com/loupe/?code=Ly8gdGhpcyBpcyBldmVudCBoYW5kbGVyIGNhbGxlZCBvbiBidXR0b24gY2xpY2sgCi8vIHN5bnRheCBpcyBsb3VwZSBzcGVjaWZpYywgYnV0IHNpbWlsYXQgdG8galF1ZXJ5CiQub24oJ2J1dHRvbicsICdjbGljaycsIGZ1bmN0aW9uIG9uQ2xpY2soKSB7CiAgIGNvbnNvbGUubG9nKCdDbGljayBoYW5kbGVkIScpOwp9KTsKCi8vIHNsb3cgc3luY2hyb25vdXMgY29kZQpbMSwyLDMsNF0uZm9yRWFjaChmdW5jdGlvbiBsb2dOdW1iZXIobnVtKSB7CiAgICBkZWxheSgpOyAvLyBsb3VwZSBzcGVjaWZpYyAtPiBibG9ja3MgZXhlY3V0aW9uCiAgICBjb25zb2xlLmxvZyhudW0pOwp9KTsK!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D)
+
+[Non-Blocking](http://latentflip.com/loupe/?code=Ly8gdGhpcyBpcyBldmVudCBoYW5kbGVyIGNhbGxlZCBvbiBidXR0b24gY2xpY2sgCi8vIHN5bnRheCBpcyBsb3VwZSBzcGVjaWZpYywgYnV0IHNpbWlsYXQgdG8galF1ZXJ5CiQub24oJ2J1dHRvbicsICdjbGljaycsIGZ1bmN0aW9uIG9uQ2xpY2soKSB7CiAgIGNvbnNvbGUubG9nKCdDbGljayBoYW5kbGVkIScpOwp9KTsKCi8vIG1ha2UgY2FsbGJhY2tzIGFzeW5jCmZ1bmN0aW9uIGFzeW5jRm9yRWFjaChhcnJheSwgY2FsbGJhY2spIHsKICAgIGFycmF5LmZvckVhY2goZnVuY3Rpb24gKGVsZW1lbnQpIHsKICAgICAgICBzZXRUaW1lb3V0KGZ1bmN0aW9uKCkgewogICAgICAgICAgICBjYWxsYmFjayhlbGVtZW50KTsKICAgICAgICB9LCAwKTsKICAgIH0pOwp9CgovLyBzcGxpdCB3b3JrIGludG8gYXN5bmMgY2FsbGJhY2tzCmFzeW5jRm9yRWFjaChbMSwyLDMsNF0sIGZ1bmN0aW9uIGFzeW5jQ2FsbGJhY2soZWxlbWVudCl7CiAgICBkZWxheSgpOwogICBjb25zb2xlLmxvZyhlbGVtZW50KTsKfSk7!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D)
+
+</Invert>
+
+<Notes>
+
+- Notice how paint can happen between work when that work is made asynchronous
+
+</Notes>
+
+---
+
+# Promises
+
+- Object that represents the eventual completion of an asynchronous operation
+- Has 3 states
+  - Pending -> Executing, not completed yet
+  - Fulfilled -> Completed successfully
+  - Rejected -> Completed, but not successfully (error happened)
+
+<Notes>
+
+- [Detailed info](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+- Sending callbacks can result in callback hell. Callback hell makes understanding code more difficult than it should be.
+- EXTRA: Watch before mentioned Jake Archibald talk and learn about Micro-processes (such as Promises)
+
+```js
+doAsyncWork(() => {
+  // work done, do another work
+  doAsyncWork(() => {
+    // work done, do another work
+    doAsyncWork(() => {
+      // work done, do another work
+      doAsyncWork(() => {
+        // WELCOME TO CALLBACK HELL
+      })
+    })
+  })
+})
+```
+
+</Notes>
+
+---
+
+<Invert>
+
+# Example - Promises
+
+- Basic promise syntax
+- Everything can be wrapped in the promise
+
+</Invert>
+
+---
+
+# Async & Await
+
+- Developer friendly way to handle promises
+- Asynchronous functions can be declared with the `async` keyword
+  - `async` functions always return promises
+- `await` keyword pauses the execution of the `async` function until the promise is fulfilled
+  - Can be only used inside the `async` declared function
+  - Doesn't block non-related code execution
+  - Should be wrapped in a `try-catch` block
+
+<Notes>
+
+- Uses promises and [generator functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*) under the hood
+- `await` is used with promises, if the promise is resolved successfully, its data will be stored into a provided variable, and execution will continue. If the promise is rejected, `try-catch` block will catch the error.
+
+</Notes>
+
+---
+
+<Invert>
+
+# Example - Async &amp; Await
+
+</Invert>
+
+---
+
+# Event Handlers
+
+- HTML DOM allows JavaScript to register Event handlers on elements
+- Part of WebAPIs
+- Handler executions are put onto the callback queue
+- `click`, `change`, `focus`, `blur`, `load`, `scroll`, ...
+
+<Notes>
+
+- [Full list of events](https://www.w3schools.com/jsref/dom_obj_event.asp)
+- use `scroll` sparingly -> triggers on every scroll frame -> can flood the callback queue
+- Node has its events too (different from the browser ones)
+
+</Notes>
+
+---
+
+# Event propagation
+
+- What happens when the event occurs in the DOM
+- Which event handler(s) should be called and in which order
+- Two modes:
+  - **Event Bubbling**
+  - Event Capturing
+
+```html
+<div onclick="divClick()">
+  <button onclick="buttonClick()">
+    <span>Fancy Text</span>
+  </button>
+</div>
+```
+
+<Notes>
+
+- Propagation mode determines which event handlers (and in which order) will be called if the event happens somewhere in the DOM when multiple elements have registered event listeners for that event.
+- Bubbling mode (**BOTTOM -> TOP**) -> Event is handled from the nearest listener (on the element where the event occurred or parent). Propagation continues to the next parent element and so on.
+- Capture mode (**TOP -> BOTTOM**, also called trickle mode) -> Event is handled from the first listener in the DOM (from the top), then propagation continues to the bottom of the DOM.
+- Two modes are for legacy reasons. Some browsers implemented bubbling mode (Netscape Navigator), others capture mode (Internet Explorer), both modes are specified in DOM specification.
+  Modern browsers implement both propagation modes, developers can choose the mode when registering event listeners. Bubbling mode is more common and enabled by default, capture mode should be implicitly set.
+
+</Notes>
+
+---
+
+<Invert>
+
+# Example - Event Propagation
+
+Show event listeners
+
+</Invert>
+
+<Notes>
+
+- Example shows difference between propagation modes.
+- Also introduces `stopPropagation`, `target`, `currentTarget` and `preventDefault` properties of an event object
+
+</Notes>
+
+---
+
+# Fetching data
+
+- Part of the `WebAPIs`
+- `fetch` function (from `window`)
+- Fetch has promise based API -> returns promise
+
+<Notes>
+
+- Historically XMLHttpRequest (XHR) -> defined by Microsoft in the 90s, the developer has to manually handle fetching state
+- Modern `fetch` is introduced to make life easier for developers
+- `fetch` is not supported in Node.js
+- [Fetch docs](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
+
+</Notes>
+
+---
+
+<Invert>
+
+# Example - Fetch
+
+Network tab
+
+</Invert>
