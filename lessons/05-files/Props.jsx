@@ -3,8 +3,8 @@ import React from 'react'
 export function Greeting(props) {
     // Object deconstruction is very common in React. It will create variables with values from object with the same name
     // in our case:
-    // `const isUppercase = this.props.isUppercase`
-    // `const color = this.props.color` and so on
+    // `const isUppercase = props.isUppercase`
+    // `const color = props.color` and so on
     const { isUppercase, color, onClick, children } = props
 
     // Note `children` prop that was not sent as attribute. `children` prop is special as it is equal to children of our rendered component

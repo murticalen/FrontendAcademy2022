@@ -27,5 +27,5 @@ export function Clock() {
     console.log('logging to console')
   }, [])
 
-  return <h3>{(date || new Date()).toLocaleTimeString()}</h3>
+  return <h3>{date ? date.toLocaleTimeString() : 'default'}</h3>
 }

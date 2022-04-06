@@ -11,7 +11,7 @@ export function List() {
       <h3>
         {words.map((word, index) => (
           // key attribute is a must when returning array
-          <span key={`${word}-${index}`} style={{ marginLeft: 8 }}>
+          <span key={`${word}`} style={{ marginLeft: 8 }}>
             {word}
           </span>
         ))}
