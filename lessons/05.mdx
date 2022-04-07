@@ -1,0 +1,410 @@
+import { themes, Head, Footer, Header, Steps, Notes, Invert } from 'mdx-deck'
+import './styles.css'
+
+export const theme = { ...themes.highlight,
+  googleFont: 'https://fonts.googleapis.com/css?family=Roboto',
+  fonts: {
+    body: '"Roboto", system-ui, sans-serif',
+    monospace: '"Roboto Mono", monospace',
+  },
+  colors: {
+    background: '#1c2632', text: '#828ba1', link: 'white'
+  }
+}
+const lessonNumber = 5
+const lessonName = 'React.js'
+const lessonTitle = `Lesson ${lessonNumber} - ${lessonName}`
+
+<!-- general markup for all slides -->
+
+<Head>
+  <title>{lessonTitle}</title>
+</Head>
+
+<Header>
+    <div className="tC m8 white">SofaScore Academy 2022.</div>
+</Header>
+
+<Footer>
+  {' '}
+  <div className="tR m8 white">{lessonTitle}</div>
+</Footer>
+
+<!-- Slide 0 -->
+
+<h1> Lesson {lessonNumber} </h1>
+
+import ssLogo from './images/ss-logo.png'
+
+<img className="med-image" src={ssLogo} />
+
+<h2>{lessonName}</h2>
+
+---
+
+# React.js
+
+- JavaScript library for building user interfaces (UI)
+- Open-source project by Facebook
+- Declarative
+  - Write how the component should look and how it should behave
+  - Complex UIs are easy to create
+- Component-Based
+  - Encapsulate logic and presentation in reusable components
+- Learn Once, Write Anywhere
+  - Web Apps, React Native
+
+<Notes>
+
+- User interface (UI) -> space where interaction between user and machine occurs. On the web, users interact with the browser and web page. React is used to build an interface for your page (the page itself).
+- Open-sourced after few years of internal usage
+- Component-Based -> Biggest React achievement, create components, encapsulate logic in them, use them everywhere (e.g. Create `Text` component which renders desired styled text and use that component where the text is needed.)
+- Learn Once, Write Anywhere -> React will run anywhere where JS can run. React can run on any web page, even in basic HTML (look at first example).
+  React can also run in Node.js (used to render components on server (SSR - Server Side Rendering), more on that later :)).
+  React Native allows React to be compiled in native iOS and Android apps, write the same code for both platforms (in reality not all code is reusable, but the majority is (especially logic)).
+
+</Notes>
+
+---
+
+# Example - Showcase
+
+import { CounterHooks, CounterClass } from './05-files/Showcase.jsx'
+
+- Functional component:
+
+```jsx
+<CounterHooks color="green" />
+```
+
+<CounterHooks color="green" />
+
+- Class component
+
+```jsx
+<CounterClass color="blue" />
+```
+
+<CounterClass color="blue" />
+
+<Notes>
+
+- With React we can do more with less code.
+- React will update the application when the state change
+- React will add and remove event listeners
+- Class vs. functional component will be discussed later
+
+</Notes>
+
+---
+
+# JSX
+
+- Syntax extension to JavaScript
+  - allows JS to understand elements (implemented as objects)
+- Template language with full JS power
+- Usage with React is optional, i.e. React can be used without it? But why would you do that?
+  - [Preact.js](https://preactjs.com/) - not really React, but it's without JSX
+- JavaScript expressions can be embedded `{/* JS Expression here */}`
+- JSX Elements are basic building blocks
+  - Elements are used to build components
+- `.jsx` file extension
+- Describes how UI should look
+
+---
+
+<Invert>
+
+# Example - JSX
+
+```react
+const greet = (
+  <h1>
+    <span className={isFancy ? 'fancy' : 'regular'}>
+      Hello
+    </span>
+    {name}
+  </h1>
+)
+```
+
+</Invert>
+
+---
+
+# JSX 2
+
+- Note that all attributes are `camelCase` in JSX.
+  - `className` instead of `class`, `tabIndex` instead of `tab-index`, ...
+  - Class is a reserved keyword in JS so we use `className` to add CSS classes to the element.
+- Any JS expression can be embedded into JSX. Eg. `{name}`, `{2+4}`, `{person.name}`, `{getScore()}`
+- JSX is JS expression -> can be stored in variables, used in JSX, ...
+
+---
+
+# React components
+
+- Encapsulate behavior and presentation
+- Basic block of component composition 🦜
+- Always capitalised (`Counter` not `counter`)
+- Translate `state` and `props` into JSX (markup)
+  - `props` are properties a component receives
+  - `state` is its internal data that can be passed to children
+- Should return only one parent element - i.e. SINGLE TOP ELEMENT
+  - Multiple elements should be wrapped in fragments `<>` and `</>`, i.e. one parent element
+  - Can also return `null`, `false`, `string`, `array`
+
+---
+
+# React components 2
+
+- Encapsulation - the key principle of React
+  - 'hide' as much logic as possible in separate components
+    - Achieve separation of concerns
+    - Code is easier to understand
+- Component composition - another key principle
+  - Separate logic and presentation into components
+  - Use components as building blocks of more complex features -> code re-use
+
+---
+
+# React functional components
+
+```react
+function Text() {
+  return <p>This is our first React component</p>
+}
+```
+
+- Function: `(props) => Markup`
+
+```react
+function Button({ children, value, onClick }) {
+  return (
+    <button value={value} onClick={onClick}>
+      {children}
+    </button>
+  )
+}
+```
+---
+
+# Props
+
+- Read-only
+  - **Do not modify props**
+- Used to pass informations into components
+  - Values, Functions, Objects
+- **When props change, component updates**
+- Passed as JSX atributes
+- `<Greeting color="tomato" isUppercase onClick={doSomething}>Hello</Greeting>`
+- `children` prop is passed as JSX element content (`Hello` in the example)
+
+<Notes>
+
+- Read-only -> Modifying of props in components will break React and is not allowed in any circumstances.
+- `children` prop is special as it is passed via JSX content (between opening and closing JSX tags) instead of JSX attribute form. Components can use `children` if needed.
+- Props are used to specify, even configure components. Props allow us to write more generic components that can be reused only by changing props.
+  Notice how props change in the place where a component is used, not in the component itself.
+  Developers use props to provide API for component users and should think about providing props to cover various use-cases.
+  On the other side, components shouldn't expose too many props because that leads to over configuration and will make components hard to understand and test.
+  Choosing props is the real balancing act between covering various use-cases and not exposing too many props.
+  General rules of thumb are:
+  - Try creating more generic props that could serve many use-cases instead of many specialized props that serve a single use-case.
+  - Don't introduce business logic as prop (use more genric `isActive` then `isNavButtonActive`).
+- Common props include values (`name`, `value`, `selectedOption`, ...), objects (`options`, `selectedOptions`, ...), functions (`onClick`, `onChange`, ...) and flags (`isOpen`, `isActive`, ...)
+- When the parent component changes props of the child using those props, that child will render with new props.
+- Props can be optional and developers can provide a default value.
+
+</Notes>
+
+---
+
+import propsMeme from './images/propsMeme.jpg'
+
+- Avoid `isRed`, `isBlue`, `isGreen` in favor of `color` prop
+
+<img className="big-image" alt="Props meme" src={propsMeme} />
+
+---
+
+# Example - Props
+
+import { Greeting } from './05-files/Props'
+
+`<Greeting color="tomato" isUppercase onClick={doSomething}>Hello</Greeting>`
+
+<Greeting color="tomato" isUppercase onClick={() => alert('Hello')}>
+  Hello
+</Greeting>
+
+- Edit props in lecture source code
+
+---
+
+# Class vs functional components
+
+- In initial React releases, class components were much more powerful
+  - Functional components could not access React lifecycle, just return data based on props
+  - Entered: [Hooks](https://reactjs.org/docs/hooks-intro.html)
+    - Now they are equally powerful but with less code -> class components become an afterthought
+    - We will be learning only functional components
+
+---
+
+# State with useState hook
+
+- **Internal** component state used inside it
+  - Belongs to an instance, not a class or function itself, so every instance will have its own encapsulated state
+- **When state changes, component updates**
+- **Should not be modified directly** (it's a const after all) - use setter method
+  - `const [counter, setCounter] = React.useState(0)`
+- Used to store dynamic data
+- Parent component can't access child components state
+  - A component can pass its state (or part of it) as a prop to the children
+
+---
+
+<Invert>
+
+import { Counter } from './05-files/State'
+
+# Example - State
+
+<Counter />
+
+</Invert>
+
+- **Component composition is key**
+- See how we use onClick event handler
+
+---
+
+# Lifecycle methods for class components
+
+- React lifecycle phases:
+  - Mounting -> Rendering element in the DOM for the first time
+  - Updating -> Rerendering component with fresh props & state
+  - Unmounting -> Removing element from the DOM
+- See notes for detailed explanation
+
+<Notes>
+
+- Every React component will pass at least 2 out of 3 phases (Mounting and Unmounting are for sure). The updating phase could never be entered (component could never change).
+  There is 4th phase called Error Handling but this phase is left out for simplicity.
+
+- Mounting -> first render in DOM. React will reuse existing markup for other renders to minimize changes, so the mount will happen only once in component life (on the first render).
+- Updating -> updating component with new props, state, because parent rerendered or because `this.forceUpdate` is called
+- Unmounting -> removal of an element from the DOM. Happens when the component is removed from React tree (not used).
+
+</Notes>
+
+---
+
+import lifecycle from './images/reactLifecycle.png'
+
+<img className="big-image" alt="React lifecycle" src={lifecycle} />
+
+<Notes>
+
+MOUNTING:
+
+- `constructor` -> Initialization of component, setup initial state
+- `getDerivedStateFromProps` -> Used to calculate new state based on props. Returns new state or `null` if state should not change. Static method.
+  In general saving props to the state is considered an anti-pattern and causes unnecessary renders. However, there are use-cases for this method they are just rare.
+- `render` -> Component render method.
+- `componentDidMount` -> Signals end of mounting phase, the DOM is completely rendered. In this method, you can safely attach DOM listeners (e.g. `onScroll`), start timers, fetch data, ...
+
+UPDATING:
+
+- `getDerivedStateFromProps` -> Same as above.
+- `shouldComponentUpdate` -> Method that receives previous props and state, and new props and state.
+  The method should return boolean (true indicating component should rerender, false forbidding render).
+  Main usage for this method are performance optimizations beyond Reacts own optimizations. By default React has `shouldComponentUpdate() { return true }`.
+  Developers can extend `React.PureComponent` instead of `Component`. Difference is in `shouldComponentUpdate` method. `PureComponent` will check if all props are strictly equal and rerender only if there is a difference.
+  This can often cause bugs with complex props (such as objects), so I would not advise using `PureComponent`.
+- `render` -> Component render method with fresh data
+- `getSnapshotBeforeUpdate` -> Called right before actual DOM is updated. Used to save previous DOM state (e.g. scroll position).
+- `componentDidUpdate` -> Called after new DOM is finished, it is again safe to fetch, put event listeners, etc.
+  Note that `setState` can be called from `componentDidUpdate` but it must be wrapped in condition because otherwise, it would trigger an infinite update loop.
+
+UNMOUNTING:
+
+- `componentWillUnmount` -> Called right before component is removed from the DOM. Used to clean timers, event listeners, ...
+
+ERROR HANDLING:
+
+- `getDerivedStateFromError` -> Very similar to `getDerivedStateFromProps`. Used to add error to state. No side-effects are permitted.
+- `componentDidCatch` -> Called when error has been thrown by descending component. Mainly used for logging errors (e.g. Sentry).
+
+</Notes>
+
+---
+
+# Hooking into func. lifecycle with useEffect hook
+
+```react
+React.useEffect(() => {
+  // body of a function which is executed in hook, after first render
+
+  return () => {
+    // cleanup method which is executed when the component is unmounted from the DOM
+  }
+}, [/* array of dependencies */])
+
+```
+
+- Executed when component renders/updates and a value in array of dependencies changes
+- Array of dependencies options
+  - OPTIONAL - no array of dependencies: executed on every re-render
+  - Empty - on first render
+- The method in effect OPTIONALLY returns a **cleanup function** - free all taken resources and remove listeners
+
+---
+
+<Invert>
+
+# Example - Clock
+
+import { Clock } from './05-files/Clock'
+
+<Clock date={new Date()} />
+
+</Invert>
+
+---
+
+# Rules of hooks (more later...)
+
+- **Only call hooks at the top level**
+  - i.e. never call them after any `return` method
+- **Don't call them conditionally**
+  - but they can encapsulate conditional logic
+- By abiding these two rules, you will hopefully abide a third one
+  - **At every re-render, exactly the same amount of hooks should be called**
+    - **In the exactly the same order**
+
+---
+
+# React Lists
+
+- Array is a valid JSX element
+  - Can contain any valid JSX element
+- `key` attribute is a must
+  - **SHOULD** be unique for each element in an array
+  - Describe an element as closely as possible (ideally unique Id for each element)
+  - Do not use the index as key!
+  - `key` is important for React to be performant when rendering lists
+    - Allows React to reuse old DOM structure
+
+---
+
+<Invert>
+
+import { List } from './05-files/List'
+
+# Example - List
+
+<List />
+
+</Invert>
