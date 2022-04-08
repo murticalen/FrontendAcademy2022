@@ -12,7 +12,7 @@ export default function Fetcher() {
 
     // return 2 elements:
     // 1st: a button which will trigger another fetch on click, for a Pokemon with next id
-    // 2nd: svg which will consist of circle elements whose data is fetched from the API
+    // 2nd: Pokemons
     return (
         <div>
             <button>FETCH</button>
