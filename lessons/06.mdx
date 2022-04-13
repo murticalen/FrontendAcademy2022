@@ -1,0 +1,236 @@
+import { themes, Head, Footer, Header, Steps, Notes, Invert } from 'mdx-deck'
+import './styles.css'
+
+export const theme = { ...themes.highlight,
+  googleFont: 'https://fonts.googleapis.com/css?family=Roboto',
+  fonts: {
+    body: '"Roboto", system-ui, sans-serif',
+    monospace: '"Roboto Mono", monospace',
+  },
+  colors: {
+    background: '#1c2632', text: '#828ba1', link: 'white'
+  }
+}
+const lessonNumber = 6
+const lessonName = 'TypeScript. CSS in JS. SWR. Context.'
+const lessonTitle = `Lesson ${lessonNumber} - ${lessonName}`
+
+<!-- general markup for all slides -->
+
+<Head>
+  <title>{lessonTitle}</title>
+</Head>
+
+<Header>
+    <div className="tC m8 white">SofaScore Academy 2022.</div>
+</Header>
+
+<Footer>
+  {' '}
+  <div className="tR m8 white">{lessonTitle}</div>
+</Footer>
+
+<!-- Slide 0 -->
+
+<h1> Lesson {lessonNumber} </h1>
+
+import ssLogo from './images/ss-logo.png'
+
+<img className="med-image" src={ssLogo} />
+
+<h2>{lessonName}</h2>
+
+---
+
+# TypeScript background 01
+
+- JavaScript is dynamically typed and has "quirky" behaviors
+  - These and other features/shortcomings make it easier to make mistakes in JS
+- Should JS be replaced as THE language of the web?
+  - Bigger undertaking than writing in another language and compiling the code into JS
+  - 2009-2010: [CoffeeScript](https://en.wikipedia.org/wiki/CoffeeScript) which compiles into JS
+  - 2011: Google [Dart](https://en.wikipedia.org/wiki/Dart_(programming_language)) which compiles into JS
+
+---
+
+# TypeScript background 02
+
+- 2012: Microsoft announces TypeScript (TS), a superset of JavaScript
+  - Meaning every JS code is valid TS code, but you can write better code
+  - With future ES specifications in mind
+  - Gradually released, but became a big hit!
+  - Complies .ts files into regular .js and **.tsx into .jsx**
+
+---
+
+# TypeScript syntax
+
+- [Four essential cheatsheets](https://www.typescriptlang.org/cheatsheets)
+- The gist of TS are TYPES, i.e. only describing values of variables, object properties, etc.
+  - [Everyday types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
+  - TS does add enums as a feature
+- We won't go into detail on slides, there will be code examples to check out 😊
+
+---
+
+# TypeScript + React
+
+- Great combination, React is much more expresive with TypeScript
+- Types are added as extra modules to existing libraries, they don't have to be re-written
+  - See how styled components are installed
+- `yarn create react-app app-name --template typescript`
+  - Creates a new React project with types
+  - `tsconfig.json` file in which you define compiler rules
+- your TS code is transpiled into desired version of JS code
+
+---
+
+<Invert>
+
+# TypeScript examples
+
+</Invert>
+
+---
+
+# CSS in JS 01
+
+- Classic usage of CSS via classes isn't really for the components era
+  - In big projects, those can become mentally unscalable
+  - While it supports code reuse, only most basic stuff is re-used
+    - E.g. standard project paddings, margins, borders
+  - CSS is focused on defining document-level stylesheets, not component-level
+  - Solution: CSS in JS
+
+---
+
+# CSS in JS 02
+
+- Idea: Write CSS inside JS files, leverage some JS features
+- Advantages:
+  - Thinking in components
+  - Inject only used styles at render-time, not all styles
+  - Handles vendor prefixing (e.g. `-webkit-box-align` or `-moz-box-align`)
+  - Dead code elimination
+  - Almost flat learning curve because it's very similar to classic CSS, but better
+  - No (minimal) inline styling
+  - Clean conditional statements
+
+---
+
+# Styled components
+
+- `yarn add styled-components`
+- `yarn add @types/styled-components`
+- SofaScore's preferred CSS in JS library
+- Essentially writing styles inside template strings
+  - Allows using JS variables inside those strings
+- Can be in the same file as other JS or in separate files
+
+---
+
+<Invert>
+
+# Styled components examples
+
+</Invert>
+
+---
+
+# SWR 01
+
+- Fetch + useEffect + useState is okayish, but we usually require complex features
+  - E.g. polling, local caching, fetching on tab focus, request deduplication
+  - We could implement this, but let's not reinvent the wheel 😀
+  - Enter: SWR (stale-while-revalidate)
+- **Hooks based** HTTP client library
+
+---
+
+
+# SWR 02
+
+- `yarn add swr`
+  - Types are added out of the box
+- Wrap your app in `SWRConfig` which accepts value of `SWRConfiguration` type
+  - Fetcher callback needs to be defined
+    - For all intents and purposes of this Academy just c/p my demo
+  - Check out App.tsx in our demo project
+- `const {data: match, error} = useSWR<MatchDetailsResponse>(matchRoute(matchId), {refreshInterval: 10000})`
+  - Store result of MatchDetailsResponse type into match variable, error in error variable
+  - Poll the server every 10 seconds
+
+---
+
+<Invert>
+
+# SWR examples
+
+</Invert>
+
+---
+
+# Context motivation
+
+- Problems:
+  - We have a value at the top of the app, and need it:
+    - A) Pretty much everywhere (e.g. app's theme - light or dark)
+    - B) In some component deep in the file tree
+  - We want to remain flexible where to use some data or logic
+- Anti-solution: "prop drilling"
+  - Pass everything via props to every component
+    - The whole component tree re-renders on change, app is data heavy
+
+---
+
+# Context solution
+
+- Shipped with React
+- Wrap your components/App with a **ContextProvider** component with some value (can be an object)
+- Consume your Context via ContextConsumer component or **useContext** hook
+- See slide notes for detailed info
+
+<Notes>
+
+- Prop drilling - In React data is passed top-down via props.
+  Prop drilling is anti-pattern when some components receive props they don't need and pass them to their children components and patterns repeats deeper into the tree.
+- React Context allows developers to share data between a parent and multiple children. The parent is called `Provider` as it provides value for children.
+  The child is called `Consumer` as it consumes provided data.
+- Rules:
+  - Provider has to be rendered above children (it has to be the parent to children)
+  - Consumer will receive data from the nearest Provider of the same type (if multiple rendered).
+  - When Provider value changes, all its Consumers will rerender, to get new value.
+- Context works with both class and functional components. To be more specific context can be consumed in class and functional components.
+- Context is created with `createContext` function. The function receives an optional defaultValue which will be used as the initial context value.
+  The context contains two components (that are used from the outside):
+  - Provider (`MyContext.Provider`)
+  - Consumer (`MyContext.Consumer`)
+- Contexts are usually added to separate files and they export `Context` itself, `Provider`, and `Consumer` components.
+
+</Notes>
+
+---
+
+# Context vs Redux
+
+- Redux is a 3rd party library for state-management
+  - Extremely popular with React a few years ago, now it's just popular
+  - Propagation of state changes to components
+- Context comes out of the box with React
+- Context is simpler to use and makes cleaner code
+- Redux is more robust for state management and persisted states
+  - Context can but isn't exactly intended to fully replace a state management library
+
+---
+
+<Invert>
+
+# Context examples
+
+</Invert>
+
+---
+
+# Thank you
+
+## Next lecture: Other React hooks. Advanced React patterns.
