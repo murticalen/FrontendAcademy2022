@@ -1,6 +1,6 @@
 import React from "react";
 
-enum OperatingSystem {
+export enum OperatingSystem {
     MacOS = 'mac',
     Windows = 'windows',
     Linux = 'linux'
@@ -28,7 +28,7 @@ type NetworkConnectivity = '2G' | '3G' | '4G' | '5G' | 1000 | SuperCoolColor
 
 interface Smartphone extends Device {
     networkConnectivity: NetworkConnectivity[] // array of available connectivities
-    type: 'mobile' // all mobile devices have type === 'mobile'
+    type: 'mobile' // all smartphones have type === 'mobile'
 }
 
 interface InnerProps {
@@ -36,8 +36,11 @@ interface InnerProps {
 }
 
 type HTMLStuff = Pick<React.HTMLAttributes<React.ElementType>, 'className' | 'style'> // pick only className and style from HTML Attrs.
+
 type EmptyProps = Omit<InnerProps, 'device'> // omit device from InnerProps, now they are empty
+
 type NewInnerProps = EmptyProps & {isBroken?: boolean} // NewInnerProps is union of empty props and {isBroken}
+
 type ChildyProps = React.PropsWithChildren<NewInnerProps> // instead of writing Children manually in props, extend your type this way
 
 export type SmartphoneProps = HTMLStuff & ChildyProps // final props are: 'className', 'style', 'children' and 'isBroken'

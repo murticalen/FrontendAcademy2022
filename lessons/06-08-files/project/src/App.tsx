@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import { SWRConfig, SWRConfiguration } from 'swr';
 import DeviceNameContext from './context/DeviceNameContext';
 import styled from 'styled-components';

@@ -14,12 +14,12 @@ export default function Match({id}: {id: number}) {
     if (!data && !error) {
         return (<div>Loading...</div>)
     }
-    if (!data) {
+    if (!data) { // if (error)
         return (<div>An error has occurred...</div>)
     }
 
     return (
-        <S.MatchContainer>
+        <S.MatchContainer isWorlcCupFinal={id === 7693131}>
             {`${data.event.homeTeam.name} ${data.event.homeScore.display} - ${data.event.awayScore.display} ${data.event.awayTeam.name}`}
         </S.MatchContainer>
     )
