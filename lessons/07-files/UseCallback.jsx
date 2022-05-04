@@ -9,7 +9,7 @@ function BadText(props) {
 // React.Memo is used to memoize function results outside functional components. Inside components use `useMemo` hook.
 // second argument is optional: props are equal method which takes previous and next props and compares whether they are equal
 const Text = React.memo(BadText)
-//const Text = React.memo(BadText, () => true)
+//const Text = React.memo(BadText, (previousProps, nextProps) => false)
 
 export function UseCallback() {
   const [number, setNumber] = React.useState(0)
