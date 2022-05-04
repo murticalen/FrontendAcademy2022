@@ -15,7 +15,9 @@
     "start:05": "mdx-deck lessons/05.mdx",
     "build:05": "mdx-deck build lessons/05.mdx",
     "start:06": "mdx-deck lessons/06.mdx",
-    "build:06": "mdx-deck build lessons/06.mdx"
+    "build:06": "mdx-deck build lessons/06.mdx",
+    "start:07": "mdx-deck lessons/07.mdx",
+    "build:07": "mdx-deck build lessons/07.mdx"
   },
   "repository": "git@github.com:murticalen/FrontendAcademy2022.git",
   "author": "Alen Murtić <murtic.alen@hotmail.com>",

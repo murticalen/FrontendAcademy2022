@@ -1,0 +1,249 @@
+import { themes, Head, Footer, Header, Steps, Notes, Invert } from 'mdx-deck'
+import './styles.css'
+
+export const theme = { ...themes.highlight,
+  googleFont: 'https://fonts.googleapis.com/css?family=Roboto',
+  fonts: {
+    body: '"Roboto", system-ui, sans-serif',
+    monospace: '"Roboto Mono", monospace',
+  },
+  colors: {
+    background: '#1c2632', text: '#828ba1', link: 'white'
+  }
+}
+const lessonNumber = 7
+const lessonName = 'Responsive web. More React hooks. Refs. Intro to Advanced React Patterns'
+const lessonTitle = `Lesson ${lessonNumber} - ${lessonName}`
+
+<!-- general markup for all slides -->
+
+<Head>
+  <title>{lessonTitle}</title>
+</Head>
+
+<Header>
+    <div className="tC m8 white">SofaScore Academy 2022.</div>
+</Header>
+
+<Footer>
+  {' '}
+  <div className="tR m8 white">{lessonTitle}</div>
+</Footer>
+
+<!-- Slide 0 -->
+
+<h1> Lesson {lessonNumber} </h1>
+
+import ssLogo from './images/ss-logo.png'
+
+<img className="med-image" src={ssLogo} />
+
+<h2>{lessonName}</h2>
+
+---
+
+# Responsive web 01
+
+- Initially, web was desktop-only and then desktop-orientated, mobile was an afterthought
+- Mobile browsers used to re-arrange web page flow to fit in on their screens
+  - Not that bad but not great, browsers rendered the pages differently
+  - Alternatives: special mobile sites which didn't need to be re-arranged (e.g. https://m.sofascore.com)
+- Mobile phones started having "insane" resolutions, e.g. 5" phone was "Full HD" like 32" TV
+  - Solution: viewport of those phones is smaller, **CSS pixel isn't the same as physical pixel**
+- Viewport tag to add: https://www.w3schools.com/css/css_rwd_viewport.asp
+- More: https://webspeedtools.com/viewport-vs-screen-resolution-vs-dpr-vs-ppi/
+
+---
+
+# Responsive web 02 - Accessible web
+
+- elements sizing: [different CSS units](https://www.w3schools.com/cssref/css_units.asp) - absolute and relative
+  - px (pixel) - absolute - CSS pixels
+  - em - font-size relative to parent font-size; width, etc. relative to the font-size of the element
+  - rem - relative to font-size of the root element (mostly to html tag)
+    - If root element has relative font-size like `100%`, then it reads browser settings
+- Which one to use? 3 combinations are mostly used:
+  - 1) Sizing in px, font-size in px - Complex layouts like SofaScore web page
+    - Because of that viewport tag, zooming-in pages makes them accessible
+  - 2) Sizing in px, font-size in rem - Layout is fixed, content is browser-resizeable
+  - 3) Sizing in rem, font-size in rem - Everything is browser-resizeable
+    - Also works for complex layouts, but it's a bit harder
+
+---
+
+# `useMemo`
+
+- Used to memoize **value** of some operation
+- Memoize expensive operations
+- No side effects allowed - use `useEffect` for side effects
+- No guarantees that function will not rerun with same input
+- `const memoizedValue = useMemo(() => computeSomething(a, b), [a, b]);`
+
+---
+
+import { UseMemo } from './07-files/UseMemo'
+
+<Invert>
+
+# `useMemo` - Example
+
+<UseMemo />
+
+</Invert>
+
+---
+
+# `useCallback`
+
+- Used to memoize function (Not function result)
+- Memoize handlers passed as props to avoid reference changes to handlers
+  - Handlers - methods which handle events: onClick, onScroll, ...
+  - Avoids unnecessary re-renders where the handler is passed as a prop
+- `const callback = useCallback(() => { /* do something */ }, [ /* dependencies */ ])`
+- `useCallback(fn, deps)` is equivalent to `useMemo(() => fn, deps)`
+
+---
+
+import { UseCallback } from './07-files/UseCallback'
+
+<Invert>
+
+# `useCallback` - Example
+
+<UseCallback />
+
+</Invert>
+
+---
+
+# Extras
+- When to useMemo and useCallback by Kent C. Dodds
+  - sometimes memoization is overkill
+  - [Link](https://kentcdodds.com/blog/usememo-and-usecallback)
+
+---
+
+# React Refs
+
+- React is declerative and abstracts DOM manipulations
+- Refs are used to get reference on the underlying DOM element
+  - Access DOM element properties (e.g. height, position, ...)
+- Returns object with `current` key set to DOM object or `null`
+- `useRef` hook - `const ref = useRef(null)`
+- `createRef` method - `this.ref = createRef(null)`
+- Refs are also used to store data which should not trigger re-renders
+- Check out notes for detailed explanation
+
+<Notes>
+
+- React is declarative, it abstracts DOM elements and manipulations. Sometimes developers need access to underlying DOM elements.
+- React Refs allows access to underlying DOM elements. Access to those elements allows developers to get element height, position, to add DOM attributes, ...
+- Refs can be used in class components and functional components via the `useRef` hook.
+- Ref will be returned in the object as `current` property. `current` property is a reference to DOM element or null if the element is not set.
+- Refs can be used inside class components (`createRef`) or inside functional components (useRef`) hook.
+- Refs are commonly used with generic base components (input, button).
+- Refs are also used to store mutable data which should not trigger re-renders -> the same as the instance fields in classes
+
+</Notes>
+
+---
+
+import { Refs } from './07-files/Refs'
+
+<Invert>
+
+# React Refs - Example
+
+<Refs />
+
+</Invert>
+
+---
+
+# React Performance
+
+- Browser DOM is slow and inconsistent
+- Reuse DOM
+- SyntheticEvent - All DOM events in React are wrapped in the SyntheticEvent wrapper
+  - Browser universal (works for all browsers) event wrapper
+  - Has all properties of native browser event (`target`, `currentTarget`, `stopPropagation`, `preventDefault`, ...)
+- Before React 17: Events were [pooled and reused](https://reactjs.org/docs/legacy-event-pooling.html), it caused problems for developers
+
+---
+
+# Virtual DOM
+
+- Virtual representation of a UI in the memory
+- Abstracts DOM manipulations, event handling
+- Synced with real DOM -> **reconciliation** process
+
+<Notes>
+
+- React will make all changes and calculations on the efficient Virtual DOM. Once Virtual DOM is finished, React will calculate the difference with the real DOM to find a minimal set of changes needed.
+- Virtual DOM is responsible for all DOM manipulations. It will also communicate DOM changes to the browser. All Virtual DOM tasks are performed under the hood by `reactDOM` library.
+  `reactDOM` is the connection between `react` and browser (`react` is platform-agnostic, it will work in the browser, on mobile phones, on servers, anywhere where JS would work).
+  Target platform is determined by wrapper library (`reactDOM` -> browser, server; `react-native` -> Mobile Apps)
+- Reconciliation - process of syncing virtual and real DOM.
+
+</Notes>
+
+---
+
+# Reconciliation algorithm
+
+- Process of syncing Virtual and real DOM
+- Assumptions:
+  - Two elements of a different type will produce different trees.
+    - Don't change element types when not needed
+  - Developer can hint at which child elements are stable across renders (`key` prop)
+- Determines component lifecycle (update, mount, unmount)
+
+<Notes>
+
+- Assumptions: If we change element type (div -> span) tree will be different and it should be replaced (remove old, insert new tree).
+  Don't change element type if not necessary.
+  Use the `key` prop to mark stable elements. Stable elements can be reused if the `key` stays the same.
+  Don't change keys if not necessary and don't switch keys between two elements (especially of the same type, e.g. `div` ).
+- If element rerenders -> update lifecycle will be called (`getDerivedStateFromProps`, `render`, `componentDidUpdate`), state is preserved.
+- If element is removed and inserted -> unmount and mount lifecycles will be called (`componentWillUnmount`, `constructor`, `getDerivedStateFromProps`, `render`, `componentDidMount`), state is not preserved.
+- [Reconciliation in details](https://reactjs.org/docs/reconciliation.html)
+
+</Notes>
+
+---
+
+# Performance - Developers
+
+- Minimize expensive DOM operations -> follow reconciliation rules
+- **Minimize number of unnecessary rerenders**
+- When will rerender happen:
+  - Prop change - (prop value or reference)
+  - State change
+  - Context change
+  - `this.forceUpdate()` - class components
+  - When parent rerenders
+
+<Notes>
+
+- Avoid unnecessary expensive DOM operations (replacing elements).
+- Rerenders can be slow (big lists, lot of elements, ...) and cause UX problems (flickering, mistimed animations, ...).
+  React will try its best to preserve DOM structure, so rerenders could be cheap (if there are no DOM changes).
+  Developers should know when components should rerender and how to avoid unnecessary re-renders.
+  The component will rerender if:
+  1. Props change -> Props with new value should rerender, props with new reference could avoid rerendering (if object reference changes, the object can still have same properties -> no need to rerender, use `useMemo` and `useCallback`).
+     Just be cautious when diffing, as diff process can take longer than rerender.
+  2. State change -> Few valid use-cases when state change doesn't need rerender. If state change doesn't need to rerender it's often a sign of bad state architecture (part of the state should be ordinary variable or a prop)
+  3. Context change -> When context provider value changes, all consumers will be updated.
+  4. When `this.forceUpdate()` called -> Used for complex multistep animations (could be replaced with carefully crafted state).
+  5. When parent rerenders -> Common performance problem. When parent rerenders, all their children will also rerender, and those rerenders could be avoided.
+     This problem is solved with component architecture: keep changes as deep in a tree as possible. Rerenders deeper in the tree will trigger fewer rerenders than those up the tree.
+
+</Notes>
+
+---
+
+# Thank you
+
+## Next lecture: More Advanced React patterns.
+
+### Thanks to **Matija Šekrst**! - last year's teacher
