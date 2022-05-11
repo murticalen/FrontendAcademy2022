@@ -1,0 +1,365 @@
+import { themes, Head, Footer, Header, Steps, Notes, Invert } from 'mdx-deck'
+import './styles.css'
+
+export const theme = { ...themes.highlight,
+  googleFont: 'https://fonts.googleapis.com/css?family=Roboto',
+  fonts: {
+    body: '"Roboto", system-ui, sans-serif',
+    monospace: '"Roboto Mono", monospace',
+  },
+  colors: {
+    background: '#1c2632', text: '#828ba1', link: 'white'
+  }
+}
+const lessonNumber = 8
+const lessonName = 'React Patterns. Routing.'
+const lessonTitle = `Lesson ${lessonNumber} - ${lessonName}`
+
+<!-- general markup for all slides -->
+
+<Head>
+  <title>{lessonTitle}</title>
+</Head>
+
+<Header>
+    <div className="tC m8 white">SofaScore Academy 2022.</div>
+</Header>
+
+<Footer>
+  {' '}
+  <div className="tR m8 white">{lessonTitle}</div>
+</Footer>
+
+<!-- Slide 0 -->
+
+<h1> Lesson {lessonNumber} </h1>
+
+import ssLogo from './images/ss-logo.png'
+
+<img className="med-image" src={ssLogo} />
+
+<h2>{lessonName}</h2>
+
+---
+
+## React Patterns
+
+---
+
+# Controlled components
+
+- Components which are controlled by the parent via props
+  - They receive `value` and `onChange` handler
+- Often used in forms to allow the parent to always know current input values
+
+<Notes>
+
+- Controlled components let their parent update their state. This is useful if the component state is also needed in the parent component (e.g. value of input element in form).
+
+</Notes>
+
+---
+
+<Invert>
+
+# Example - Contolled Input
+
+</Invert>
+
+---
+
+# Reusability & Separation
+
+- The same logic can often be reused and separated into a single place
+- Share logic between components
+  - Separate logic and presentation in different places
+  - Insert logic into the component from the other component (or function)
+- React patterns (similar to Decorator Design pattern)
+  - High Order Component
+  - Render Props
+  - Custom hooks
+
+<Notes>
+
+- Separation of concerns is an important principle in software development
+- React allows us to insert logic into component via common React patterns (which are similar to the Decorator design pattern):
+  - Hight Order Components(HOC)
+  - Render Props
+  - Custom hooks
+- Decorator pattern is called that because it decorates some component with logic or behavior from the outside
+
+</Notes>
+
+---
+
+<Invert>
+
+# Motivation - Example
+
+- Separate mobile devices from desktops
+
+</Invert>
+
+---
+
+# High Order Component
+
+- Function which receives component as an argument
+- Returns new component which renders provided component with extra props
+  - Function that wraps provided component into a new component with the desired logic
+- Provided component must not be mutated
+- Passes handler or value to the component via props
+  - Problem when the passed prop is already in use by component (in `props`)
+- Usually starts with `with*`
+
+```react
+const ComponentWithBehaviour = withBehaviour(Component => {
+  // props for Component provided
+  return function(props) {
+    const behaviour /* value or function added to component */
+
+    return <Component behaviour={behaviour} {...props} />
+  }
+})
+```
+
+<Notes>
+
+- Function that wraps provided component into new component with desired logic.
+- Component should not be mutated, it can only be decorated with new props.
+- Note how `props` are spread on component provided. In props are own props for provided component.
+  This is place where problems can happen if decorated prop has same name as some prop on component, as decorated prop would be overridden.
+- HOC usualy have `with` prefix
+- HOC are used in some popular libraries (`withRouter` in `react-router`)
+
+</Notes>
+
+---
+
+<Invert>
+
+# High Order Component - Example
+
+</Invert>
+
+---
+
+# Render Prop
+
+- Component without conventional render function
+  - Receives render function as a prop
+- Component with logic and without presentation
+  - Calls provided render function with enhancements as arguments
+- Render is often passed as `children` or as `render` prop
+
+```react
+// decorated component
+function Component(props) {
+  return <RenderPropComponent
+    render={enhancements => /* do something with enhancements */}
+  />
+})
+```
+
+<Notes>
+
+- Component with render method as a prop (render method is provided via `children` or `render` prop)
+- More declarative usage than HOC, as it is used inside the component that is decorated, so prop name collision is not possible.
+- Can substitute HOC and vice versa.
+- Render Prop is used in some popular libraries (`render` prop in `react-router`, or `Downshift` in `downshift`)
+
+</Notes>
+
+---
+
+<Invert>
+
+# Render Prop - Example
+
+</Invert>
+
+---
+
+# Custom Hook
+
+- Function that is called inside functional components
+  - Returns enhancements that will be used in functional components
+- Uses other React Hooks (`useState`, `useEffect`, `useCallback` ...)
+
+```react
+// decorated component
+function Component(props) {
+  const enhancements = useCustomHook()
+
+  return /* do something with enhancements */}
+})
+```
+
+<Notes>
+
+- Ordinary function that returns some enhancements and decorates component which called it
+- Cleaner syntax, easier to understand
+
+</Notes>
+
+---
+
+<Invert>
+
+# Custom hooks - Example
+
+</Invert>
+
+---
+
+# React Portal
+
+- Render children outside of DOM hierarchy
+  - Used with modals, dialogs, notifications
+- Commonly used with Singleton pattern
+- ReactDOM specific
+- `ReactDOM.createPortal(child, container)`
+- Event propagation and Context work as if it is still in the hierarchy
+
+<Notes>
+
+- Sometimes there is a use case to add some markup or component outside the DOM hierarchy.
+  Those use cases often include modals, dialogs, app-level notifications and errors.
+  It is used for components that pop out of layout (to avoid complex z-indexes)
+- Singleton pattern is common as apps usually have only one element over others.
+- Portal is in the `reactDOM` package, so it can be used only for web applications.
+- `ReactDOM.createPortal(child, container)` will render child (any viable child) into provided **DOM container**.
+- Markup will be in container element but event propagation and context will behave based on hierarchy.
+  For example, an event triggered in modal will propagate to the component that rendered Portal.
+  The same rule applies to context, modal could consume providers that it could consume if it wasn't portal.
+
+</Notes>
+
+---
+
+import { TopLevelPortal } from './08-files/Portal'
+
+<Invert>
+
+# React Portal - Example
+
+<TopLevelPortal />
+
+</Invert>
+
+---
+
+# Routing
+
+---
+
+# Routing
+
+- URL addresses specific resource on the Internet (page, response, ...)
+- Makes user navigation easier (refresh, browser back)
+- Process of navigating to the specific resource on the web
+
+<Notes>
+  
+- Routing can be defined as a mapping of an URL to the resource (website)
+- Route (URL) is the identifier of resources on the Internet. The resource can be a website, API response, method, ...
+- Routing makes users experience more satisfying, as users can refresh the page and end up on the same page, 
+they can navigate through browser history (forward or back browser buttons), etc.
+- Routing ensures that the same URL will always point to the same page (or another resource).
+
+</Notes>
+
+---
+
+# Search Engine Optimization (SEO)
+
+- Process of making a website more visible in search results
+- Search engines crawl web, index content from pages, points to relevant pages in search results
+- Ranking algorithm is secret, known only by search engine companies.
+
+<Notes>
+  
+- Search engines (e.g. Google, Bing) crawl the web, following links between pages and indexing page content. 
+This index is then used when user search for informations, as search engine can point to relevant page which is most likely to 
+provide information to the user.
+- Each search engine has its own secret ranking algorithm. but some parts overlap between them.
+- SEO is important as it is directly connected with bigger traffic and revenue.
+
+</Notes>
+
+---
+
+import seoMeme from './images/seo.gif'
+
+# SEO
+
+- More traffic -> More 💰
+
+<img alt="SEO Meme" src={seoMeme} className="big-image" />
+
+---
+
+# Server side routing
+
+- Route transition is handled on the server
+  - When the URL changes, a new HTML document is retrieved from the server
+- Browser has to communicate with the server
+- Good:
+  - Minimal data for each page
+  - Search engine friendly
+- Bad:
+  - Slower interaction between pages
+  - Full refresh of a page -> Context is lost
+
+<Notes>
+  
+- Classic route transition strategy. When URL changes, the browser will request a new HTML document for the new URL. 
+HTML is then parsed and any needed resources are fetched (CSS, JS, images, fonts, ...).
+- Good:
+  - Each page is a separate HTML document, so each page can contain minimal data needed for that page.
+  - SEO benefits: Search engine crawlers are made to understand HTML markup, so they can better index each page, as it has its HTML.
+- Bad:
+  - Slower interaction as the browser has to wait for server response before switching pages.
+  - Each route transition can be seen as a full refresh. 
+  Previous page context (local variables, DOM) is lost and replaced with new page context. 
+  There is also repetitive content on multiple pages (e.g. header is the same on two pages, but it has to be downloaded with each page and rendered again)
+
+</Notes>
+
+---
+
+# Client side routing
+
+- Route transition is handled on the client
+  - When URL changes, new HTML is not needed
+- Good:
+  - Faster page transitions
+  - Preserves context
+  - Page transitions can be animated
+- Bad:
+  - Larger first load
+  - Possible extra data
+  - Not so friendly to search engines
+
+<Notes>
+
+- Route transitions are handled via JavaScript. This means that JS knows what to show for each URL, so there is no need to download a new HTML document.
+- Good:
+  - Faster page changes as there is no HTML document download included.
+  - Preserves context as there is no full page refresh (variables are preserved, DOM can be preserved, ...).
+  - Page transitions happen on the client-side, within the same document, so transitions can be animated to create a smooth user experience.
+- Bad:
+  - First-page load is larger as the whole app navigation has to be shipped to a client. Also, there is some extra code to handle routing which makes the load slower.
+  - Possibly more than needed data could be sent, as all pages are sent at once.
+    If the user quits the app without navigation to other pages, all those pages were downloaded without the real need.
+  - SEO problems: search engines have to parse JS and create markup. They can do that but they can parse the page wrong.
+
+</Notes>
+
+---
+
+# Thank you
+
+## Next lecture: Server-side rendering with Next.js.
+
+### Thanks to **Matija Šekrst**! - last year's teacher
