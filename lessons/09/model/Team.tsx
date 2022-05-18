@@ -1,3 +1,4 @@
+import { BasicPlayer } from './Player'
 import { Tournament, UniqueTournament } from './Tournament'
 
 export interface BasicTeam {
@@ -9,4 +10,9 @@ export interface BasicTeam {
 export interface FullTeam extends BasicTeam {
   tournament?: Tournament
   primaryUniqueTournament?: UniqueTournament
+}
+
+export interface TeamPlayer {
+  player: BasicPlayer
+  jerseyNumber?: number
 }

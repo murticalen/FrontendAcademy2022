@@ -1,7 +1,12 @@
+import { GetServerSideProps } from 'next'
+
 export default function About() {
 
     const v = Math.random()
-    console.log(v)
+    const isServer = typeof window === 'undefined'
+    if (!isServer) {
+        console.log(v)
+    }
 
     return (
         <main>
@@ -9,3 +14,8 @@ export default function About() {
         </main>
     )
 }
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    return {
+        props: {},
+    };
+};

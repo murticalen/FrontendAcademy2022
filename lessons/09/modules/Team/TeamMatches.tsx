@@ -19,19 +19,25 @@ export default function TeamMatches({ id }: { id: number }) {
 
   const { data, error } = useSWR<EventsResponse>(`https://api.sofascore.com/api/v1/team/${id}/events/last/0`)
 
-  if (!data) {
+  if (error) {
     return null
+  }
+  if (!data) {
+    return <div style={{ backgroundColor: 'grey', height: '600px', width: '300px' }}>PLACEHOLDER</div>
   }
 
   return (
     <>
       {data.events.map(event => {
-        const route = `/team/${event.homeTeam.slug}/${event.homeTeam.id}`
         return (
           <Event key={event.id}>
-            <Link href={route}>{event.homeTeam.name}</Link>
+            <Link href={`/team/${event.homeTeam.slug}/${event.homeTeam.id}`}>
+              <div style={{ color: 'red', cursor: 'pointer' }}>{event.homeTeam.name}</div>
+            </Link>
             VERSUS
-            <TeamLink team={event.awayTeam}/>
+            <TeamLink team={event.awayTeam}>
+              <div style={{ color: 'green', cursor: 'pointer' }}>{event.awayTeam.name}</div>
+            </TeamLink>
           </Event>
         )
       })}

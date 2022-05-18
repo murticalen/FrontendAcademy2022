@@ -1,11 +1,12 @@
-import { BasicPlayer } from '../../model/Player'
 import React from 'react'
+import { TeamPlayer } from '../../model/Team'
+import PlayerLink from '../Link/PlayerLink'
 
-export default function Players({players}: {players: BasicPlayer[]}) {
+export default function Players({players}: {players: TeamPlayer[]}) {
   return (
     <>
       {players.map(p => {
-        return <div key={p.id}>{p.name}</div>
+        return <PlayerLink key={p.player.id} player={p.player}><div style={{color: 'blue', cursor: 'pointer'}}>{p.player.name}</div></PlayerLink>
       })}
     </>
   )

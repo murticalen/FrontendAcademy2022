@@ -1,12 +1,11 @@
 import { GetServerSideProps } from "next";
-import { BasicPlayer } from '../../../model/Player'
-import { FullTeam } from '../../../model/Team'
+import { FullTeam, TeamPlayer } from '../../../model/Team'
 import TeamDetails from "../../../modules/Team/TeamDetails";
 import fetcher from "../../../util/fetch";
 
 interface TeamPageInterface {
   details: FullTeam
-  players: BasicPlayer[]
+  players: TeamPlayer[]
 }
 
 export default function TeamPage(props: TeamPageInterface) {
@@ -38,10 +37,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const details = await fetcher(`https://api.sofascore.com/api/v1/team/${id}`)
     const players = await fetcher(`https://api.sofascore.com/api/v1/team/${id}/players`)
 
-    console.log(details)
+    const props: TeamPageInterface = {details: details.team, players: players.players || []}
 
     return {
-      props: {details: details.team, players: players.players || []},
+      props: props,
     };
   } catch (error) {
     res.statusCode = 404;
