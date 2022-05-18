@@ -16,10 +16,9 @@ Further in this document:
 
 **The project should be finished by 6.6.2021. (Sunday).**
 
-There will be one mandatory checkpoint and two optional ones:
+There will be one mandatory checkpoint on May 31st, June 1st or between June 6th and 8th. We will arrange a Slack call and discuss your project status. You can also visit SofaScore office for the checkpoint if I am present.
 
-- Mandatory checkpoint will be in the week between 24.5. and 28.5.
-- Optional checkpoints will be every week - contact me on Slack when you've added something new and we will discuss it on call.
+Feel free to contact me on Slack when you've added something new, have a question and we can discuss it on a call or live.
 
 Use checkpoints to get feedback, ask about difficulties with the domain, API, design, or development. Checkpoint calls could save you a lot of time.
 
@@ -71,6 +70,7 @@ User stories are bellow: Stories in the **bold** are required, stories in the _i
 #### Event Page
 
 - **User can see teams playing in the event, score (if exists), date and time**
+- _User can see event statistics_
 - _User can see event extra information (e.g. venue info, referee, ...)_
 - _User can add/remove event(s) to Tracked events_
 
@@ -86,14 +86,13 @@ User stories are bellow: Stories in the **bold** are required, stories in the _i
 
 Technologies used in project:
 
-- [React.js](https://reactjs.org/) - main
-- CSS - styling
-  - **OPTIONAL:** [Sass / SCSS](https://sass-lang.com/) or [Styled-components](https://styled-components.com/)
-- [React Router](https://reacttraining.com/react-router/web/guides/quick-start) - routing
+- [React.js](https://reactjs.org/) and [Next.js](https://nextjs.org/docs/getting-started) - main
+- [Styled components](https://styled-components.com) or **any other CSS in JS** technology
+- [SWR](https://swr.vercel.app/) - for client side fetching and refreshing
+- **OPTIONAL:** 
+    - [React Router](https://reacttraining.com/react-router/web/guides/quick-start) - routing
 
-Optional technologies can be used to provide an extra challenge (CSS in JS or CSS preprocessor).
-
-There are constraints regarding UI libraries and frameworks. This project is a great opportunity to learn foundational CSS and HTML. Those skills will come in handy throughout your career, so usage of Bootstrap, Foundation, or any other 3rd party framework or library is forbidden.
+There are constraints regarding UI libraries and frameworks. This project is a great opportunity to learn foundational CSS and HTML. Those skills will come in handy throughout your career, **so usage of Bootstrap, Foundation, or any other 3rd party framework or library is forbidden**.
 
 ## Project Structure
 
@@ -105,7 +104,7 @@ Folders are placed in the `src` folder.
 
 Definitions:
 
-- `components` - Components that are domain agnostic and could exist in any application regardless of its domain (e.g. Button, Checkbox, ...). Those components are basic building blocks of application and more complex modules. A component should not use other components as they should be atomic and basic.
+- `components` - Components that are domain agnostic and could exist in any application regardless of its domain (e.g. Button, Checkbox, ...). Those components are basic building blocks of application and more complex modules.
 - `modules` - Modules are domain-bound units that serve a specific purpose (e.g. LoginForm, UserProfile). Modules usually produce side effects and are responsible for the logic and presentation part of an application
 - `api` - Api folder contains route definitions and API methods (e.g. `postLogin`, `getUser`, ...). The api also includes utilities specific to API (e.g. `getJson`, `postJson`, `parseResponse`, ...)
 - `utils` - Utilities are common helpers, types, test boilerplate (e.g. `numberSort`, ...)
@@ -163,10 +162,19 @@ The route takes 2 required URL parameters:
 
 Returns detailed information about the single event. Adds an extra layer of details on the previously explained event entity. Extra information includes for example venue, referee, or attendance date if available.
 
-The route takes 1 required URL parameter - all of them are required:
+The route takes 1 required URL parameter - event id for which you want to fetch event details.
 
 - categoryID -> events (e.g. `football`, `basketball`)
 - date -> events for the provided date are returned (note that there is no offset parameter because the route will return all events for provided date, for any time zone so from the current time zone some events can be yesterday and some tomorrow). Date formatting is the same as described above (`YYYY-MM-DD` format)
+### Event Statistics
+
+`/event/{eventID}/statistics`
+
+Returns statistics for the event, grouped by period. Period value: `ALL` represents total statistics, other periods are halfs (football, rugby), quarters (basketball, american football, ...) or something else (e.g. thirds in ice-hockey).
+
+Note: This task is not required, but it's a cheap way to add a cool feature. :) Why?
+
+The route takes 1 required URL parameter - event id for which you want to fetch event statistics.
 
 ### Team Image
 
