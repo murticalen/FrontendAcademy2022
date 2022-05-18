@@ -1,0 +1,116 @@
+import { themes, Head, Footer, Header, Steps, Notes, Invert } from 'mdx-deck'
+import './styles.css'
+
+export const theme = { ...themes.highlight,
+  googleFont: 'https://fonts.googleapis.com/css?family=Roboto',
+  fonts: {
+    body: '"Roboto", system-ui, sans-serif',
+    monospace: '"Roboto Mono", monospace',
+  },
+  colors: {
+    background: '#1c2632', text: '#828ba1', link: 'white'
+  }
+}
+const lessonNumber = 9
+const lessonName = 'Server-side rendering with Next.js'
+const lessonTitle = `Lesson ${lessonNumber} - ${lessonName}`
+
+<!-- general markup for all slides -->
+
+<Head>
+  <title>{lessonTitle}</title>
+</Head>
+
+<Header>
+    <div className="tC m8 white">SofaScore Academy 2022.</div>
+</Header>
+
+<Footer>
+  {' '}
+  <div className="tR m8 white">{lessonTitle}</div>
+</Footer>
+
+<!-- Slide 0 -->
+
+<h1> Lesson {lessonNumber} </h1>
+
+import ssLogo from './images/ss-logo.png'
+
+<img className="med-image" src={ssLogo} />
+
+<h2>{lessonName}</h2>
+
+---
+
+# Next.js
+
+- Server-side rendering framework for React
+- Instead of using create react-app, use the following command:
+- ```yarn create next-app [app name] --typescript```
+- Project structure is different than classic React
+  - All generated files are in **pages** directory
+- Server-side and client-side routing and rendering out of the box
+- Important: disable strict mode in ``next.config.js`` file
+  - Among other things, it runs useEffect twice on render
+
+---
+
+# Next.js pages
+
+- Two types of pre-rendering:
+  - **Static generation** - HTML is generated **at build time**
+    - Definite (final) number of pages
+  - **Server-side rendering** - HTML is generated **on each request**
+    - Indefinite (unknown) number of pages based on parameters
+- `_app.tsx` file - all components are wrapped in its default export
+- `index.tsx` file - default page
+
+---
+
+# Static pages
+
+- Without data - generates single HTML file
+  - Example: ``pages/about.tsx``
+- With data - HTML + JSON props - two options:
+  - Fixed path, content depends on external data - ``getStaticProps``
+    - Example - ``pages/privacy.tsx``
+  - Variable path (dynamic routing) - ``getStaticPaths`` + ``getStaticProps``
+    - Example - ``pages/country/[alpha2].tsx``
+    - The idea is to have a limited number of pages, e.g. SofaScore motorsport categories
+- Still can use client-side rendering
+
+---
+
+# Server-side rendering 01
+
+- HTML is not created at build time, but at each request
+- Must implement method ``getServerSideProps``
+  - Fetch from dynamic routes
+- Default export is your page component
+
+---
+
+# Server-side rendering 02
+
+- Client vs server
+  - `useEffect` is run on client
+  - `useSWR` is run on client
+  - `console.log(...)` on server is written in the terminal running the app
+    - Important for debugging
+  - Most of other code is run on server
+- `const isServer = typeof window === 'undefined'`
+
+---
+
+# Routing
+
+- Next gives you routing by default
+  - `Link` components instead of `a`
+  - `useRouter()` hook
+    - `const router = useRouter()` and `router.push(path)`
+  - Translated routes are also an option
+- [More on routing](https://nextjs.org/docs/routing/introduction)
+
+---
+
+# Thank you
