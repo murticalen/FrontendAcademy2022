@@ -14,8 +14,9 @@ export default function About() {
         </main>
     )
 }
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    return {
-        props: {},
-    };
-};
+
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//     return {
+//         props: {},
+//     };
+// };
