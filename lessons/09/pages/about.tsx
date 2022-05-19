@@ -15,7 +15,7 @@ export default function About() {
     )
 }
 
-// NOTE: THIS MAKES THE SITE SERVER-SIDE RENDERED DESPITE BEING STATIC IN CONTENT
+// NOTE: THIS MAKES THE PAGE SERVER-SIDE RENDERED DESPITE BEING STATIC IN CONTENT
 // export const getServerSideProps: GetServerSideProps = async (context) => {
 //     return {
 //         props: {},
