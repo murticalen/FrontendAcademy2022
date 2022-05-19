@@ -1,4 +1,4 @@
-# SofaScore Frontend Academy 2021 - Project
+# SofaScore Frontend Academy 2022 - Project
 
 The final academy project will be a smaller SofaScore application. We will utilize some of the SofaScore API routes to create the desired application.
 
