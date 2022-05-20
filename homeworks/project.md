@@ -30,13 +30,14 @@ In this chapter, I will first describe the basic entities used and their connect
 Basic entities are:
 
 - **Unique Tournament** - Entity describing single competition (can be league, cup, ...). Examples of an unique tournaments: English Premier League (ID = 17), Uefa Champions League (ID = 7), Roland Garros (ID = 2480), ...
+- **Tournament** - Entity describing a part of the competition, such as a group or a phase. Examples: Champions League Group A, NBA Regular Season, World Cup Knockout phase. Each event (match) is linked to a tournament, which is then **optionally** linked to a unique tournament. I.e. it may be linked, but it may not.
 - **Category** - Parent entity for unique tournament(s). The category will be a common separator for tournaments. Examples of a category: English, Europe, ATP, Croatia, World, ...
 - **Event** - Event is an entity representing a single match. Events are usually displayed as a part of event lists from where users can choose a single event and get its details. Examples of an event: Real Madrid - Barcelona, Dinamo - Hajduk, ...
 - **Team** - Competitor in an event, i.e. a club, national team or a tennis player.
 
-IMPORTANT NOTICE: NOT EVERY TOURNAMENT HAS AN UNIQUE TOURNAMENT. Make sure you handle it, such bugs are often first presented during project demonstration. :(
+IMPORTANT NOTICE (once again): NOT EVERY TOURNAMENT HAS AN UNIQUE TOURNAMENT. Make sure you handle it, such bugs are often first presented during project demonstration. :(
 
-If You find the domain confusing, feel free to contact me and I will explain it more further.
+If You find the domain confusing, feel free to contact me, and I will explain it more further.
 
 ## User stories
 
@@ -61,6 +62,7 @@ User stories are bellow: Stories in the **bold** are required, stories in the _i
 - **User can click on the category and open/close category accordion to see/hide category events**
   - **User can click on the event and navigate to event page**
 - _User can click on category name to open category page_
+- _User can add/remove event(s) to Tracked events_
 - _User can change the date for the category list (e.g. yesterday, today, tomorrow)_
 - _User can change the sport for the category list (e.g. tennis or basketball)_
 
@@ -83,6 +85,7 @@ Technical note: you can implement sport page using either a) sport scheduled eve
 #### _Tracked Events Page_
 
 - _User can see all tracked events_
+- _User can remove event(s) from Tracked events_
 
 #### _General features_
 
@@ -95,8 +98,6 @@ Technologies used in project:
 - [React.js](https://reactjs.org/) and [Next.js](https://nextjs.org/docs/getting-started) - main
 - [Styled components](https://styled-components.com) or **any other CSS in JS** technology
 - [SWR](https://swr.vercel.app/) - for client side fetching and refreshing
-- **OPTIONAL:** 
-    - [React Router](https://reacttraining.com/react-router/web/guides/quick-start) - routing
 
 There are constraints regarding UI libraries and frameworks. This project is a great opportunity to learn foundational CSS and HTML. Those skills will come in handy throughout your career, **so usage of Bootstrap, Foundation, or any other 3rd party framework or library is forbidden**.
 
