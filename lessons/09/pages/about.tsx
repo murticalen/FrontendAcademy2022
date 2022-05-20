@@ -14,8 +14,10 @@ export default function About() {
         </main>
     )
 }
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    return {
-        props: {},
-    };
-};
+
+// NOTE: THIS MAKES THE PAGE SERVER-SIDE RENDERED DESPITE BEING STATIC IN CONTENT
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//     return {
+//         props: {},
+//     };
+// };
