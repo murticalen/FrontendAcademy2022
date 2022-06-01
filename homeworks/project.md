@@ -36,6 +36,7 @@ Basic entities are:
 - **Team** - Competitor in an event, i.e. a club, national team or a tennis player.
 
 IMPORTANT NOTICE (once again): NOT EVERY TOURNAMENT HAS AN UNIQUE TOURNAMENT. Make sure you handle it, such bugs are often first presented during project demonstration. :(
+Two handling options: You can skip those events in your app or show non-clickable tournament name instead of unique tournament.
 
 If You find the domain confusing, feel free to contact me, and I will explain it more further.
 
