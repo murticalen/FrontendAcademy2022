@@ -227,4 +227,4 @@ Suggested free deployment providers are:
 - [Netlify](https://www.netlify.com/)
 - [Heroku](https://heroku.com)
 
-If you are deploying your app to a service, make sure the URL has the word "sofa" in it. E.g. If deployed to vercel, a possible valid URL would be "murticalen-sofa-project".
+If you are deploying your app to a service, make sure the URL has the word "sofa" in it. E.g. If deployed to vercel, a possible valid URL would be "murticalen-sofa-project.vercel.app".
